@@ -73,7 +73,6 @@ while GAME_ON:
     for event in pygame.event.get():
         if event.type == QUIT:
             GAME_ON = False
-        if event.type == KEYDOWN:
             if event.type == KEYDOWN:
                 if event.key == K_p:  # Pause when 'P' is pressed
                     pause_game()

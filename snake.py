@@ -12,7 +12,7 @@ class Snake():
     def __init__(self):
         self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
         self.skin = pygame.Surface((10, 10))
-        self.skin.fill((255, 0, 0))
+        self.skin.fill((255, 255, 255))
         self.head = pygame.Surface((10, 10))
         self.head.fill((200, 200, 200))
         self.direction = RIGHT

@@ -22,9 +22,9 @@ apple.set_random_position(400)
 
 # Initialize walls
 walls = [
-    Wall(300, 150, 100, 10),   # Horizontal wall
-    Wall(50, 250, 10, 100),    # Vertical wall
-    Wall(200, 50, 150, 10)     # Another horizontal wall
+    Wall(0, 0, 400, 10),   # Horizontal wall
+    Wall(0, 0, 10, 400),    # Vertical wall
+    Wall(0, 0, 150, 10),     # Another horizontal wall
 ]
 
 def game_over_screen():
@@ -37,8 +37,7 @@ def game_over_screen():
     screen.blit(game_over_text, text_rect)  # Display text
     pygame.display.flip()  # Update display
 
-    # Wait for a few seconds or until player closes the window
-    pygame.time.delay(2000)
+    pygame.time.delay(2000)  # Wait for 2 seconds before quitting
 
 def pause_game():
     """Pauses the game until the player presses 'P' to resume."""
@@ -60,8 +59,7 @@ def pause_game():
                 paused = False
 
 while GAME_ON:
-    # Clear the screen at the start of each frame
-    screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))  # Clear screen
     clock.tick(SPEED)
 
     snake.crawl()  # Update snake position
@@ -102,7 +100,6 @@ while GAME_ON:
     screen.blit(snake.head, snake.snake[-1])
     screen.blit(apple.apple, apple.position)
 
-    # Update the display
     pygame.display.update()
 
 pygame.quit()
