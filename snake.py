@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 UP = 0
 DOWN = 1
@@ -47,6 +46,7 @@ class Snake:
             self.snake[len(self.snake) - 1][1] >= screen_size or self.snake[len(self.snake) - 1][1] < 0
 
     def snake_eat_apple(self, apple_pos):
+        # Check if the head of the snake is at the same position as the apple
         return self.snake[-1] == apple_pos
 
     def snake_bigger(self):

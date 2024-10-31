@@ -27,17 +27,14 @@ walls = [
     Wall(150, 250, 10, 100)   # Vertical inner wall
 ]
 
-
 # Apple count variable
 score  = 0
-
 
 # Render and display the apple count
 def show_score():
     font= pygame.font.Font(None,35)
     score_text= font.render("Score:" +str(score), True, WHITE)
     screen.blit(score_text, (10,10)) #display score in the top left corner
-
 
 def game_over_screen():
     """Displays the game-over screen."""
@@ -112,7 +109,6 @@ while GAME_ON:
     for snake_pos in snake.snake[:-1]:
         screen.blit(snake.skin, snake_pos)
     screen.blit(snake.head, snake.snake[-1])
-    screen.blit(apple.apple, apple.position)
 
     # Draw the apple
     apple.draw(screen)  # Call the draw method for the apple
