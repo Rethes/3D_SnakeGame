@@ -7,25 +7,36 @@ LEFT = 2
 RIGHT = 3
 
 
-class Snake():
+class Snake:
 
-    def __init__(self):
+    def __init__(self, screen_size=400):
         self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
         self.skin = pygame.Surface((10, 10))
         self.skin.fill((255, 255, 255))
         self.head = pygame.Surface((10, 10))
         self.head.fill((200, 200, 200))
         self.direction = RIGHT
+        self.screen_size = screen_size  # Save screen size for wrap-around effect
 
     def crawl(self):
+        x, y = self.snake[-1]  # Get current head position
+
+        # Move head position based on the direction
         if self.direction == RIGHT:
-            self.snake.append((self.snake[len(self.snake) - 1][0] + 10, self.snake[len(self.snake) - 1][1]))
+            x += 10
         elif self.direction == UP:
-            self.snake.append((self.snake[len(self.snake) - 1][0], self.snake[len(self.snake) - 1][1] - 10))
+            y -= 10
         elif self.direction == DOWN:
-            self.snake.append((self.snake[len(self.snake) - 1][0], self.snake[len(self.snake) - 1][1] + 10))
+            y += 10
         elif self.direction == LEFT:
-            self.snake.append((self.snake[len(self.snake) - 1][0] - 10, self.snake[len(self.snake) - 1][1]))
+            x -= 10
+
+        # Wrap around if the snake goes out of bounds
+        x = x % self.screen_size
+        y = y % self.screen_size
+
+        # Add new head position to the snake and remove the tail
+        self.snake.append((x, y))
         self.snake.pop(0)
 
     def self_collision(self):

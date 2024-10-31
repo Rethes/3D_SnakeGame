@@ -97,22 +97,25 @@ while GAME_ON:
     for wall in walls:
         wall.draw(screen)  # Draw each wall
         if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and snake.snake[-1][1] in range(wall.y,
-                                                                                                    wall.y + wall.height):
+                                                                                        wall.y + wall.height):
             game_over_screen()
             GAME_ON = False
 
     # Check if snake eats apple
     if snake.snake_eat_apple(apple.position):
-        apple.set_random_position(400)
-        snake.snake_bigger()
-        SPEED += 0.5
-        score += 1  # Increment apple count
+        apple.set_random_position(400)  # Set new random position for the apple
+        snake.snake_bigger()  # Make the snake grow
+        SPEED += 0.5  # Increase speed
+        score += 1  # Increment score
 
     # Draw snake and apple
     for snake_pos in snake.snake[:-1]:
         screen.blit(snake.skin, snake_pos)
     screen.blit(snake.head, snake.snake[-1])
     screen.blit(apple.apple, apple.position)
+
+    # Draw the apple
+    apple.draw(screen)  # Call the draw method for the apple
 
     # display the apple count
     show_score()
