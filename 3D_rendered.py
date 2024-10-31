@@ -22,10 +22,13 @@ apple.set_random_position(400)
 
 # Initialize walls
 walls = [
-    Wall(0, 0, 400, 10),   # Horizontal wall
-    Wall(0, 0, 10, 400),    # Vertical wall
-    Wall(0, 0, 150, 10),     # Another horizontal wall
+    Wall(100, 100, 200, 10),  # Horizontal inner wall
+    Wall(150, 250, 10, 100)   # Vertical inner wall
 ]
+
+# Apple count variable
+apple_count = 0
+font = pygame.font.Font(None, 36)
 
 def game_over_screen():
     """Displays the game-over screen."""
@@ -63,6 +66,7 @@ while GAME_ON:
     clock.tick(SPEED)
 
     snake.crawl()  # Update snake position
+    # print("Game loop running")
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -83,8 +87,9 @@ while GAME_ON:
     for wall in walls:
         wall.draw(screen)  # Draw each wall
 
-    # Check for collisions
-    if snake.wall_collision(400) or snake.self_collision():
+    # Check for wall collisions
+    if  snake.wall_collision(400) or snake.self_collision() or (snake.snake[-1][0] in range(wall.x, wall.x + wall.width)
+            and snake.snake[-1][1] in range(wall.y,wall.y + wall.height)):
         game_over_screen()
         GAME_ON = False
 
@@ -93,12 +98,17 @@ while GAME_ON:
         apple.set_random_position(400)
         snake.snake_bigger()
         SPEED += 0.5
+        apple_count += 1  # Increment apple count
 
     # Draw snake and apple
     for snake_pos in snake.snake[:-1]:
         screen.blit(snake.skin, snake_pos)
     screen.blit(snake.head, snake.snake[-1])
     screen.blit(apple.apple, apple.position)
+
+    # Render and display the apple count
+    apple_count_text = font.render(f"Apples Eaten: {apple_count}", True, WHITE)
+    screen.blit(apple_count_text, (10, 10))
 
     pygame.display.update()
 
