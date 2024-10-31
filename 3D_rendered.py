@@ -16,7 +16,8 @@ screen = pygame.display.set_mode((400, 400))
 clock = pygame.time.Clock()
 
 # Create game objects
-snake = Snake()
+screen_size = 400  # Adjust according to your game screen dimensions
+snake = Snake(screen_size)
 apple = Apple()
 apple.set_random_position(400)
 
@@ -25,6 +26,7 @@ walls = [
     Wall(100, 100, 200, 10),  # Horizontal inner wall
     Wall(150, 250, 10, 100)   # Vertical inner wall
 ]
+
 
 # Apple count variable
 score  = 0
@@ -91,13 +93,11 @@ while GAME_ON:
             elif event.key == K_RIGHT and snake.direction != LEFT:
                 snake.direction = RIGHT
 
-    # Draw walls
+    # Check for wall collisions and self collision
     for wall in walls:
         wall.draw(screen)  # Draw each wall
-
-    # Check for wall collisions
-    for wall in walls:
-        if snake.head.get_rect(topleft=snake.snake[-1]).colliderect(wall.rect):
+        if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and snake.snake[-1][1] in range(wall.y,
+                                                                                                    wall.y + wall.height):
             game_over_screen()
             GAME_ON = False
 
@@ -108,13 +108,14 @@ while GAME_ON:
         SPEED += 0.5
         score += 1  # Increment apple count
 
-    show_score()
-
     # Draw snake and apple
     for snake_pos in snake.snake[:-1]:
         screen.blit(snake.skin, snake_pos)
     screen.blit(snake.head, snake.snake[-1])
     screen.blit(apple.apple, apple.position)
+
+    # display the apple count
+    show_score()
 
     pygame.display.update()
 
