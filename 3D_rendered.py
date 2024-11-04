@@ -32,6 +32,7 @@ score  = 0
 
 # Render and display the apple count
 def show_score():
+    """Displays the score board."""
     font= pygame.font.Font(None,35)
     score_text= font.render("Score:" +str(score), True, WHITE)
     screen.blit(score_text, (10,10)) #display score in the top left corner
