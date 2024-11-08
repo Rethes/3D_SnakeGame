@@ -98,6 +98,9 @@ python main.py
 ## <a name="acknowledgements">Acknowledgements</a>
 We would like to express our gratitude to the following resources and communities that made the development of this Snake Game possible:
 
-Pygame Community – For providing an excellent library that simplifies game development in Python. Visit pygame.org for more information.
-Python Software Foundation – For the Python programming language, which served as the backbone for this project. Visit python.org for more details.
-Inspiration from Classic Snake Games – This project is inspired by the classic Snake game, which has been a favorite among players for decades.
+-Pygame Community – For providing an excellent library that simplifies game development in Python. Visit pygame.org for 
+ more information.
+-Python Software Foundation – For the Python programming language, which served as the backbone for this project. Visit 
+ python.org for more details.
+-Inspiration from Classic Snake Games – This project is inspired by the classic Snake game, which has been a favorite among 
+ players for decades.
