@@ -45,9 +45,11 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 5. A score board
 
-6. Game over screen
+6. Show the player's score on the game over screen
 
 7. Pause Function
+
+8. Implement a high score feature
 
 
 ## <a name="quick-start">Quick Start</a>
@@ -86,8 +88,9 @@ python main.py
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
 
-## <a name="Future Improvements"> Future Improvements</a> 
-- Show the player's score on the game over screen
+## <a name="Future Improvements"> Future Improvements</a>
+- Add Sound Effects
 - Add a start-up window with the name of the game
-- Implement a high score feature
-- Add power ups to the game; extra lives
+- Add diagonal movement support 
+- Display a leaderboard of top scores either on the game-over screen or in a separate screen/menu.
+
