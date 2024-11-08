@@ -28,23 +28,55 @@ walls = [
 ]
 
 # Apple count variable
-score  = 0
+score = 0
+
+# High score variable
+high_score = 0
+
+# Function to load high score from a file
+def load_high_score():
+    global high_score
+    try:
+        with open("high_score.txt", "r") as file:
+            # Read the content of the file and try to convert it to an integer
+            content = file.read().strip()  # Strip to remove any leading/trailing whitespace
+            if content:  # Check if content is not empty
+                high_score = int(content)  # Convert to integer
+            else:
+                high_score = 0  # Set high score to 0 if content is empty
+    except FileNotFoundError:
+        high_score = 0  # Set high score to 0 if the file doesn't exist
+    except ValueError:
+        high_score = 0  # Set high score to 0 if the file contains invalid data
+
+# Function to save high score to a file
+def save_high_score():
+    global high_score
+    with open("high_score.txt", "w") as file:
+        file.write(str(high_score))
 
 # Render and display the apple count
 def show_score():
     """Displays the score board."""
-    font= pygame.font.Font(None,35)
-    score_text= font.render("Score:" +str(score), True, WHITE)
-    screen.blit(score_text, (10,10)) #display score in the top left corner
+    font = pygame.font.Font(None, 35)
+    score_text = font.render(f"Score: {score}", True, WHITE)
+    screen.blit(score_text, (10, 10))  # Display score in the top left corner
 
 def game_over_screen():
-    """Displays the game-over screen."""
+    """Displays the game-over screen with the score and high score."""
     font = pygame.font.Font(None, 50)
     game_over_text = font.render("Game Over", True, RED)
-    text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    score_text = font.render(f"Score: {score}", True, WHITE)  # Display score
+    high_score_text = font.render(f"High Score: {high_score}", True, WHITE)  # Display high score
+
+    text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    score_rect = score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+    high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
 
     screen.fill((0, 0, 0))  # Clear screen
-    screen.blit(game_over_text, text_rect)  # Display text
+    screen.blit(game_over_text, text_rect)  # Display "Game Over" text
+    screen.blit(score_text, score_rect)  # Display score
+    screen.blit(high_score_text, high_score_rect)  # Display high score
     pygame.display.flip()  # Update display
 
     pygame.time.delay(2000)  # Wait for 2 seconds before quitting
@@ -68,13 +100,15 @@ def pause_game():
             elif event.type == KEYDOWN and event.key == K_p:  # Press 'P' to resume
                 paused = False
 
+# Load high score when the game starts
+load_high_score()
+
 while GAME_ON:
     # Clear screen
     screen.fill((0, 0, 0))
     clock.tick(SPEED)
 
     snake.crawl()  # Update snake position
-    # print("Game loop running")
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -96,7 +130,6 @@ while GAME_ON:
         wall.draw(screen)  # Draw each wall
         if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and snake.snake[-1][1] in range(wall.y,
                                                                                         wall.y + wall.height):
-
             game_over_screen()
             GAME_ON = False
 
@@ -115,10 +148,14 @@ while GAME_ON:
     # Draw the apple
     apple.draw(screen)  # Call the draw method for the apple
 
-    # display the apple count
+    # Display the apple count
     show_score()
 
     pygame.display.update()
 
-pygame.quit()
+    # Check if new high score is achieved
+    if score > high_score:
+        high_score = score
+        save_high_score()  # Save the new high score to the file
 
+pygame.quit()
