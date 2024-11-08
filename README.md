@@ -12,7 +12,7 @@
 
 ## <a name="introduction">🤖 Introduction</a>
 
-Built with Pygame 
+A classic snake game, developed using Python and pygame. This project introduces various advanced mechanics that enhance gameplay, including passing through walls, a self-collision-free snake, and challenging obstacles within the arena. With engaging visuals and a smooth interface, the game offers a dynamic and entertaining experience for players.
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
