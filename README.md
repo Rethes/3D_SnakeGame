@@ -14,6 +14,21 @@
 
 A classic snake game, developed using Python and pygame. This project introduces various advanced mechanics that enhance gameplay, including passing through walls, a self-collision-free snake, and challenging obstacles within the arena. With engaging visuals and a smooth interface, the game offers a dynamic and entertaining experience for players.
 
+**How to play the game**
+The main objective is to control the snake, collect apples, and achieve the highest possible score without colliding with obstacles or losing control.
+
+**Basic Controls:**
+
+**Arrow Keys:**
+Up: Move the snake up.
+Down: Move the snake down.
+Left: Move the snake left.
+Right: Move the snake right.
+
+**Pause/Resume**
+Press P to pause or resume the game.
+
+
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 - Python
