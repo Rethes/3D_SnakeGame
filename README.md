@@ -26,7 +26,7 @@ The main objective is to control the snake, collect apples, and achieve the high
 - Right: Move the snake right.
 
 **Pause/Resume**
-Press P to pause or resume the game.
+- Press P to pause or resume the game.
 
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
@@ -81,5 +81,5 @@ Install the project dependencies using pip:
 **Running the Project**
 
 ```bash
-python 3D_rendered.py
+python main.py
 ```

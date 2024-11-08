@@ -96,6 +96,7 @@ while GAME_ON:
         wall.draw(screen)  # Draw each wall
         if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and snake.snake[-1][1] in range(wall.y,
                                                                                         wall.y + wall.height):
+
             game_over_screen()
             GAME_ON = False
 
