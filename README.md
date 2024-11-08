@@ -29,28 +29,28 @@ The main objective is to control the snake, collect apples, and achieve the high
 - Press P to pause or resume the game.
 
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+## <a name="tech-stack">Tech Stack</a>
 
 - Python
 
-## <a name="features">🔋 Features</a>
+## <a name="features"> Features</a>
 
-👉 The snake can pass through walls 
+1. The snake can pass through walls 
 
-👉The snake cannot collide with itself 
+2. The snake cannot collide with itself 
 
-👉The snake gets bigger when it eats apples
+3. The snake gets bigger when it eats apples
 
-👉Walls inside the arena to make the game harder
+4. Walls inside the arena to make the game harder
 
-👉A score board
+5. A score board
 
-👉Game over screen
+6. Game over screen
 
-👉Pause Function
+7. Pause Function
 
 
-## <a name="quick-start">🤸 Quick Start</a>
+## <a name="quick-start">Quick Start</a>
 
 Follow these steps to set up the project locally on your machine.
 
@@ -88,6 +88,6 @@ python main.py
 
 ## <a name="Future Improvements"> Future Improvements</a> 
 - Add difficulty levels (easy, medium, hard)
-- Add a start up window with the name of the game
+- Add a start-up window with the name of the game
 - Implement a high score feature
 - Add power ups to the game 
