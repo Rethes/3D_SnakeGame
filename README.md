@@ -20,10 +20,10 @@ The main objective is to control the snake, collect apples, and achieve the high
 **Basic Controls:**
 
 **Arrow Keys:**
-Up: Move the snake up.
-Down: Move the snake down.
-Left: Move the snake left.
-Right: Move the snake right.
+- Up: Move the snake up.
+- Down: Move the snake down.
+- Left: Move the snake left.
+- Right: Move the snake right.
 
 **Pause/Resume**
 Press P to pause or resume the game.
