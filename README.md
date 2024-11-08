@@ -51,8 +51,8 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/JavaScript-Mastery-Pro/threejscc-portfolio.git
-cd threejscc-portfolio
+git clone https://github.com/Rethes/3D_SnakeGame.git
+cd 3D_SnakeGame
 ```
 
 **Installation**
