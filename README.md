@@ -90,7 +90,6 @@ python main.py
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
 
 ## <a name="future-improvements"> Future Improvements</a> 
-- Show the player's score on the game over screen
 - Add a start-up window with the name of the game
 - Implement a high score feature
 - Add power ups to the game; extra lives
