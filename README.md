@@ -83,3 +83,14 @@ Install the project dependencies using pip:
 ```bash
 python main.py
 ```
+## <a name="Code Overview"> Code Overview</a>
+- snake.py - Handles the snake's movement, growth, and collision detection.
+- apple.py - Handles the apple's appearance and random positioning on the screen.
+- walls.py - Defines the positions and dimensions of walls within the game.
+- main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
+
+## <a name="Future Improvements"> Future Improvements</a> 
+- Add difficulty levels (easy, medium, hard)
+- Add a start up window with the name of the game
+- Implement a high score feature
+- Add power ups to the game 
