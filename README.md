@@ -59,9 +59,6 @@ Follow these steps to set up the project locally on your machine.
 Make sure you have the following installed on your machine:
 
 - Git 
-- Python
-- Pygame
-- Random
 
 **Cloning the Repository**
 
