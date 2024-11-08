@@ -9,6 +9,9 @@
 2.  [Tech Stack](#tech-stack)
 3.  [Features](#features)
 4.  [Quick Start](#quick-start)
+5.  [Code Overview](#code-overview)
+6.  [Future Improvements](#future-improvements)
+7.  [Acknowledgements](#acknowledgements)
 
 ## <a name="introduction">Introduction</a>
 
@@ -80,14 +83,21 @@ Install the project dependencies using pip:
 ```bash
 python main.py
 ```
-## <a name="Code Overview"> Code Overview</a>
+## <a name="code-overview"> Code Overview</a>
 - snake.py - Handles the snake's movement, growth, and collision detection.
 - apple.py - Handles the apple's appearance and random positioning on the screen.
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
 
-## <a name="Future Improvements"> Future Improvements</a> 
+## <a name="future-improvements"> Future Improvements</a> 
 - Show the player's score on the game over screen
 - Add a start-up window with the name of the game
 - Implement a high score feature
 - Add power ups to the game; extra lives
+
+## <a name="acknowledgements">Acknowledgements</a>
+We would like to express our gratitude to the following resources and communities that made the development of this Snake Game possible:
+
+Pygame Community – For providing an excellent library that simplifies game development in Python. Visit pygame.org for more information.
+Python Software Foundation – For the Python programming language, which served as the backbone for this project. Visit python.org for more details.
+Inspiration from Classic Snake Games – This project is inspired by the classic Snake game, which has been a favorite among players for decades.
