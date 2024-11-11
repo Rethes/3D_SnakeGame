@@ -48,9 +48,11 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 5. A score board
 
-6. Game over screen
+6. Show the player's score on the game over screen
 
 7. Pause Function
+
+8. Implement a high score feature
 
 
 ## <a name="quick-start">Quick Start</a>
@@ -89,17 +91,8 @@ python main.py
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
 
-## <a name="future-improvements"> Future Improvements</a> 
+## <a name="Future Improvements"> Future Improvements</a> 
+- Show the player's score on the game over screen
 - Add a start-up window with the name of the game
 - Implement a high score feature
 - Add power ups to the game; extra lives
-
-## <a name="acknowledgements">Acknowledgements</a>
-We would like to express our gratitude to the following resources and communities that made the development of this Snake Game possible:
-
--Pygame Community – For providing an excellent library that simplifies game development in Python. Visit pygame.org for 
- more information.
--Python Software Foundation – For the Python programming language, which served as the backbone for this project. Visit 
- python.org for more details.
--Inspiration from Classic Snake Games – This project is inspired by the classic Snake game, which has been a favorite among 
- players for decades.
