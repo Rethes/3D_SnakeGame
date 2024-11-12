@@ -232,6 +232,7 @@ def game_over_screen():
 
 
 
+
 def game_loop():
     global GAME_ON, score, high_score, SPEED
     global banana_active, grape_active 

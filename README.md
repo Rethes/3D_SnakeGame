@@ -17,8 +17,13 @@
 
 A classic snake game, developed using Python and pygame. This project introduces various advanced mechanics that enhance gameplay, including passing through walls, a self-collision-free snake, and challenging obstacles within the arena. With engaging visuals and a smooth interface, the game offers a dynamic and entertaining experience for players.
 
+**Game Objects**
+- snake: The player controls the snake and tries to grow it by eating apples.
+- Apple: Increases the snake’s size and score when eaten.
+- Banana: A power-up that appears after a certain number of apples are eaten. Gives a score boost and speed increase.
+- Grape: Another power-up that appears after eating more apples. Gives a bigger score boost and speed increase.
 **How to play the game**
-The main objective is to control the snake, collect apples, and achieve the highest possible score without colliding with obstacles or losing control.
+The main objective is to control the snake, collect apples and other powerups, and achieve the highest possible score without colliding with obstacles or losing control.
 
 **Basic Controls:**
 
@@ -38,7 +43,7 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 ## <a name="features"> Features</a>
 
-1. The snake can pass through walls 
+1. The snake cannot pass through walls 
 
 2. The snake cannot collide with itself 
 
@@ -54,9 +59,9 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 8. Implement a high score feature
 
-9. Player can restart the game
+9. Restart options
 
-10. Add a start-up window with the name of the game
+10. Add a splash screen with the name of the game
 
 
 ## <a name="quick-start">Quick Start</a>
@@ -94,8 +99,9 @@ python main.py
 - apple.py - Handles the apple's appearance and random positioning on the screen.
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
+- powerups.py - Handles the powerups that increase the score
 
 ## <a name="Future Improvements"> Future Improvements</a> 
 - Add difficulty levels
 - Implement a background, snake skin and apple skin
-- Add power ups to the game; extra lives
+
