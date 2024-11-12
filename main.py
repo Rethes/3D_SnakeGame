@@ -87,7 +87,6 @@ def show_splash_screen():
             elif event.type == KEYDOWN:
                 waiting_for_input = False  # Start the game once any key is pressed
 
-
 # Function to load high score from a file
 def load_high_score():
     global high_score
@@ -230,12 +229,15 @@ def game_over_screen():
                     exit()
         pygame.time.delay(1000)  # Delay for 1 second to keep the game over screen visible before restart
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 590e54e81ad60741cc0b41c2a82f721d0a7054ae
 def game_loop():
     global GAME_ON, score, high_score, SPEED
-    global banana_active, grape_active 
+    global banana_active, banana_counter, grape_active, grape_counter, banana_timer, grape_timer, apple_counter
 
     # Show the splash screen at the start
     show_splash_screen()
@@ -277,78 +279,87 @@ def game_loop():
                 game_over_screen()
                 GAME_ON = False
 
-    # Check if snake eats apple
-    if snake.snake_eat_apple(apple.position):
-        apple.set_random_position(400, walls)  # Set new random position for the apple
-        snake.snake_bigger()  # Make the snake grow
-        SPEED += 0.5  # Increase speed
-        score += 1  # Increment score
-        apple_counter += 1
-        banana_counter += 1
-        grape_counter += 1
+        # Check if snake eats apple
+        if snake.snake_eat_apple(apple.position):
+            apple.set_random_position(400, walls)  # Set new random position for the apple
+            snake.snake_bigger()  # Make the snake grow
+            SPEED += 0.5  # Increase speed
+            score += 1  # Increment score
+            apple_counter += 1
+            banana_counter += 1
+            grape_counter += 1
 
-        # Check if the banana power-up should be activated
-        #if apple_counter == 3:
-        if banana_counter >= 3 and not banana_active:
-            banana.set_random_position(400, walls)
-            banana_active = True
-            banana_timer = pygame.time.get_ticks()  # Start the timer
-            banana_counter = 0 # Reset banana counter
+            # Check if the banana power-up should be activated
+            # if apple_counter == 3:
+            if banana_counter >= 3 and not banana_active:
+                banana.set_random_position(400, walls)
+                banana_active = True
+                banana_timer = pygame.time.get_ticks()  # Start the timer
+                banana_counter = 0  # Reset banana counter
 
-        # Check if the grape power-up should be activated
-        #if apple_counter == 5:
-        if grape_counter >= 5 and not grape_active:
-            grape.set_random_position(400, walls)
-            grape_active = True
-            grape_timer = pygame.time.get_ticks()  # Start the timer
-            grape_counter = 0 # Reset grape counter
+            # Check if the grape power-up should be activated
+            # if apple_counter == 5:
+            if grape_counter >= 5 and not grape_active:
+                grape.set_random_position(400, walls)
+                grape_active = True
+                grape_timer = pygame.time.get_ticks()  # Start the timer
+                grape_counter = 0  # Reset grape counter
 
-    # Check if snake eats banana
-    if banana_active and snake.snake_eat_banana(banana.position):
-        banana_active = False
-        score += 3  # Increment score
-        SPEED += 1
+        # Check if snake eats banana
+        if banana_active and snake.snake_eat_banana(banana.position):
+            banana_active = False
+            score += 3  # Increment score
+            SPEED += 1
 
-    # Check if the banana power-up timer has expired
-    if banana_active and pygame.time.get_ticks() - banana_timer >= banana_lifespan:
-        banana_active = False
+        # Check if the banana power-up timer has expired
+        if banana_active and pygame.time.get_ticks() - banana_timer >= banana_lifespan:
+            banana_active = False
 
-    # Check if the grape power-up timer has expired
-    if grape_active and pygame.time.get_ticks() - grape_timer >= grape_lifespan:
-        grape_active = False
+        # Check if the grape power-up timer has expired
+        if grape_active and pygame.time.get_ticks() - grape_timer >= grape_lifespan:
+            grape_active = False
 
-    # Check if snake eats grape
-    if grape_active and snake.snake_eat_grape(grape.position):
-        grape_active = False
-        score += 5  # Increment score
-        SPEED += 1.5
-        
-    # Draw snake, banana, grape and apple
-    for snake_pos in snake.snake[:-1]:
-        screen.blit(snake.skin, snake_pos)
-    screen.blit(snake.head, snake.snake[-1])
+        # Check if snake eats grape
+        if grape_active and snake.snake_eat_grape(grape.position):
+            grape_active = False
+            score += 5  # Increment score
+            SPEED += 1.5
+
+        # Draw snake, banana, grape and apple
+        for snake_pos in snake.snake[:-1]:
+            screen.blit(snake.skin, snake_pos)
+        screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
-    apple.draw(screen)
+        apple.draw(screen)
 
-    if banana_active:
-        banana.draw(screen)  # Draw the banana
+        if banana_active:
+            banana.draw(screen)  # Draw the banana
 
-    if grape_active:
-        grape.draw(screen)  # Draw the grape
+        if grape_active:
+            grape.draw(screen)  # Draw the grape
 
-    # display the apple count
-    show_score()
+        # Draw snake and apple
+        for snake_pos in snake.snake[:-1]:
+            screen.blit(snake.skin, snake_pos)
+        screen.blit(snake.head, snake.snake[-1])
 
-    pygame.display.update()
+        # Draw the apple
+        apple.draw(screen)
+
+        # Display the apple count (score)
+        show_score()
+
+        pygame.display.update()
 
         # Check if new high score is achieved
-    if score > high_score:
-        high_score = score
-        save_high_score()  # Save the new high score to the file
+        if score > high_score:
+            high_score = score
+            save_high_score()  # Save the new high score to the file
 
     pygame.quit()
 
 
 # Call the game loop
 game_loop()
+

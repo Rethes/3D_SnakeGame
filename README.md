@@ -1,7 +1,5 @@
 
-
-  <h3 align="center">Snake Game</h3>
-
+<h3 align="center">Snake Game</h3>
 
 ##  <a name="table">Table of Contents</a>
 
@@ -15,35 +13,39 @@
 
 ## <a name="introduction">Introduction</a>
 
-A classic snake game, developed using Python and pygame. This project introduces various advanced mechanics that enhance gameplay, including passing through walls, a self-collision-free snake, and challenging obstacles within the arena. With engaging visuals and a smooth interface, the game offers a dynamic and entertaining experience for players.
+A **classic snake game**, developed using **Python** and **Pygame**. This project introduces several advanced mechanics to enhance gameplay, including:
 
-**Game Objects**
-- snake: The player controls the snake and tries to grow it by eating apples.
-- Apple: Increases the snake’s size and score when eaten.
-- Banana: A power-up that appears after a certain number of apples are eaten. Gives a score boost and speed increase.
-- Grape: Another power-up that appears after eating more apples. Gives a bigger score boost and speed increase.
+- **Passing through walls**: The snake can move from one side of the screen to the other by passing through the walls, adding a new challenge.
+- **Self-collision-free snake**: The snake is immune to self-collisions, enabling more creative and complex movement.
+- **Challenging obstacles**: Obstacles are placed inside the arena to increase difficulty, requiring the player to maneuver carefully.
+  
+With smooth controls and engaging visuals, this game provides a dynamic and entertaining experience.
+
 **How to play the game**
-The main objective is to control the snake, collect apples and other powerups, and achieve the highest possible score without colliding with obstacles or losing control.
+The main objective is to control the snake, collect apples, and achieve the highest possible score without colliding with obstacles or losing control.
 
 **Basic Controls:**
 
-**Arrow Keys:**
-- Up: Move the snake up.
-- Down: Move the snake down.
-- Left: Move the snake left.
-- Right: Move the snake right.
+- **Arrow Keys:**
+  - Up: Move the snake up.
+  - Down: Move the snake down.
+  - Left: Move the snake left.
+  - Right: Move the snake right.
 
-**Pause/Resume**
-- Press P to pause or resume the game.
+- **Pause/Resume**: Press **P** to pause or resume the game.
 
+- **Restart**: Press **R** to restart the game if it’s over.
+
+- **Quit**: Press **Q** to quit the game.
 
 ## <a name="tech-stack">Tech Stack</a>
 
-- Python
+- **Python**: Programming language used for game development.
+- **Pygame**: Game development library for handling graphics, events, and game logic.
 
-## <a name="features"> Features</a>
+## <a name="features">Features</a>
 
-1. The snake cannot pass through walls 
+1. The snake can pass through walls 
 
 2. The snake cannot collide with itself 
 
@@ -59,20 +61,21 @@ The main objective is to control the snake, collect apples and other powerups, a
 
 8. Implement a high score feature
 
-9. Restart options
+9. Player can restart the game
 
-10. Add a splash screen with the name of the game
+10. Add a start-up window with the name of the game
 
 
 ## <a name="quick-start">Quick Start</a>
 
 Follow these steps to set up the project locally on your machine.
 
-**Prerequisites**
+### **Prerequisites**
 
-Make sure you have the following installed on your machine:
+Make sure you have the following installed:
 
-- Git 
+- **Git** for version control
+- **Python** (preferably Python 3.x)
 
 **Cloning the Repository**
 
@@ -99,9 +102,9 @@ python main.py
 - apple.py - Handles the apple's appearance and random positioning on the screen.
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
-- powerups.py - Handles the powerups that increase the score
 
 ## <a name="Future Improvements"> Future Improvements</a> 
 - Add difficulty levels
 - Implement a background, snake skin and apple skin
-
+- Add power ups to the game; extra lives
+zz
