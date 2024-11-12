@@ -46,6 +46,45 @@ high_score=0
 banana_lifespan = 5000
 grape_lifespan = 4000
 
+# def show_splash_screen():
+#     """Displays the splash screen with the game title and instructions."""
+#     font_large = pygame.font.Font(None, 70)
+#     title_text = font_large.render("Snake Game", True, WHITE)
+#     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 4))
+#
+#     font_small = pygame.font.Font(None, 30)
+#     instructions_text1 = font_small.render("Arrow Keys: Control the direction of the snake.", True, WHITE)
+#     instructions_text2 = font_small.render("P Key: Pause the game. Press 'P' again to resume.", True, WHITE)
+#     instructions_text3 = font_small.render("R Key: Restart the game if it’s over.", True, WHITE)
+#     instructions_text4 = font_small.render("Q Key: Quit the game", True, WHITE)
+#     font_small = pygame.font.Font(None, 40)
+#     instructions_text5 = font_small.render("Press any key to start", True, WHITE)
+#
+#     instructions_rect1 = instructions_text1.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 60))
+#     instructions_rect2 = instructions_text2.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 30))
+#     instructions_rect3 = instructions_text3.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+#     instructions_rect4 = instructions_text4.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 30))
+#     instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))  # Fifth instruction
+#
+#     screen.fill((0, 0, 0))  # Clear screen
+#     screen.blit(title_text, title_rect)
+#     screen.blit(instructions_text1, instructions_rect1)
+#     screen.blit(instructions_text2, instructions_rect2)
+#     screen.blit(instructions_text3, instructions_rect3)
+#     screen.blit(instructions_text4, instructions_rect4)
+#     screen.blit(instructions_text5, instructions_rect5)
+#
+#     pygame.display.flip()  # Update display
+#
+#     # Wait for player to press any key to start the game
+#     waiting_for_input = True
+#     while waiting_for_input:
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 pygame.quit()
+#                 exit()
+#             elif event.type == KEYDOWN:
+#                 waiting_for_input = False  # Start the game once any key is pressed
 
 def show_splash_screen():
     """Displays the splash screen with the game title and instructions."""
@@ -58,35 +97,33 @@ def show_splash_screen():
     instructions_text2 = font_small.render("P Key: Pause the game. Press 'P' again to resume.", True, WHITE)
     instructions_text3 = font_small.render("R Key: Restart the game if it’s over.", True, WHITE)
     instructions_text4 = font_small.render("Q Key: Quit the game", True, WHITE)
-    font_small = pygame.font.Font(None, 40)
-    instructions_text5 = font_small.render("Press any key to start", True, WHITE)
+    instructions_text5 = pygame.font.Font(None, 40).render("Press any key to start", True, WHITE)
 
     instructions_rect1 = instructions_text1.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 60))
     instructions_rect2 = instructions_text2.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 30))
     instructions_rect3 = instructions_text3.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     instructions_rect4 = instructions_text4.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 30))
-    instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))  # Fifth instruction
+    instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))
 
-    screen.fill((0, 0, 0))  # Clear screen
+    screen.fill((0, 0, 0))
     screen.blit(title_text, title_rect)
     screen.blit(instructions_text1, instructions_rect1)
     screen.blit(instructions_text2, instructions_rect2)
     screen.blit(instructions_text3, instructions_rect3)
     screen.blit(instructions_text4, instructions_rect4)
     screen.blit(instructions_text5, instructions_rect5)
+    pygame.display.flip()
 
-    pygame.display.flip()  # Update display
-
-    # Wait for player to press any key to start the game
     waiting_for_input = True
+    clock = pygame.time.Clock()
     while waiting_for_input:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
             elif event.type == KEYDOWN:
-                waiting_for_input = False  # Start the game once any key is pressed
-
+                waiting_for_input = False
+        clock.tick(30)  # Ensure this loop runs at a reasonable frame rate
 
 # Function to load high score from a file
 def load_high_score():
@@ -230,11 +267,21 @@ def game_over_screen():
                     exit()
         pygame.time.delay(1000)  # Delay for 1 second to keep the game over screen visible before restart
 
-
-
 def game_loop():
     global GAME_ON, score, high_score, SPEED
-    global banana_active, grape_active 
+    global banana_active, banana_counter, grape_active, grape_counter, banana_timer, grape_timer, apple_counter
+
+    # Show the splash screen at the start
+    show_splash_screen()
+
+    # Rest of your code...
+
+
+    # Show the splash screen at the start
+    show_splash_screen()
+
+    # Rest of your code...
+
 
     # Show the splash screen at the start
     show_splash_screen()
@@ -276,78 +323,87 @@ def game_loop():
                 game_over_screen()
                 GAME_ON = False
 
-    # Check if snake eats apple
-    if snake.snake_eat_apple(apple.position):
-        apple.set_random_position(400, walls)  # Set new random position for the apple
-        snake.snake_bigger()  # Make the snake grow
-        SPEED += 0.5  # Increase speed
-        score += 1  # Increment score
-        apple_counter += 1
-        banana_counter += 1
-        grape_counter += 1
+        # Check if snake eats apple
+        if snake.snake_eat_apple(apple.position):
+            apple.set_random_position(400, walls)  # Set new random position for the apple
+            snake.snake_bigger()  # Make the snake grow
+            SPEED += 0.5  # Increase speed
+            score += 1  # Increment score
+            apple_counter += 1
+            banana_counter += 1
+            grape_counter += 1
 
-        # Check if the banana power-up should be activated
-        #if apple_counter == 3:
-        if banana_counter >= 3 and not banana_active:
-            banana.set_random_position(400, walls)
-            banana_active = True
-            banana_timer = pygame.time.get_ticks()  # Start the timer
-            banana_counter = 0 # Reset banana counter
+            # Check if the banana power-up should be activated
+            # if apple_counter == 3:
+            if banana_counter >= 3 and not banana_active:
+                banana.set_random_position(400, walls)
+                banana_active = True
+                banana_timer = pygame.time.get_ticks()  # Start the timer
+                banana_counter = 0  # Reset banana counter
 
-        # Check if the grape power-up should be activated
-        #if apple_counter == 5:
-        if grape_counter >= 5 and not grape_active:
-            grape.set_random_position(400, walls)
-            grape_active = True
-            grape_timer = pygame.time.get_ticks()  # Start the timer
-            grape_counter = 0 # Reset grape counter
+            # Check if the grape power-up should be activated
+            # if apple_counter == 5:
+            if grape_counter >= 5 and not grape_active:
+                grape.set_random_position(400, walls)
+                grape_active = True
+                grape_timer = pygame.time.get_ticks()  # Start the timer
+                grape_counter = 0  # Reset grape counter
 
-    # Check if snake eats banana
-    if banana_active and snake.snake_eat_banana(banana.position):
-        banana_active = False
-        score += 3  # Increment score
-        SPEED += 1
+        # Check if snake eats banana
+        if banana_active and snake.snake_eat_banana(banana.position):
+            banana_active = False
+            score += 3  # Increment score
+            SPEED += 1
 
-    # Check if the banana power-up timer has expired
-    if banana_active and pygame.time.get_ticks() - banana_timer >= banana_lifespan:
-        banana_active = False
+        # Check if the banana power-up timer has expired
+        if banana_active and pygame.time.get_ticks() - banana_timer >= banana_lifespan:
+            banana_active = False
 
-    # Check if the grape power-up timer has expired
-    if grape_active and pygame.time.get_ticks() - grape_timer >= grape_lifespan:
-        grape_active = False
+        # Check if the grape power-up timer has expired
+        if grape_active and pygame.time.get_ticks() - grape_timer >= grape_lifespan:
+            grape_active = False
 
-    # Check if snake eats grape
-    if grape_active and snake.snake_eat_grape(grape.position):
-        grape_active = False
-        score += 5  # Increment score
-        SPEED += 1.5
-        
-    # Draw snake, banana, grape and apple
-    for snake_pos in snake.snake[:-1]:
-        screen.blit(snake.skin, snake_pos)
-    screen.blit(snake.head, snake.snake[-1])
+        # Check if snake eats grape
+        if grape_active and snake.snake_eat_grape(grape.position):
+            grape_active = False
+            score += 5  # Increment score
+            SPEED += 1.5
+
+        # Draw snake, banana, grape and apple
+        for snake_pos in snake.snake[:-1]:
+            screen.blit(snake.skin, snake_pos)
+        screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
-    apple.draw(screen)
+        apple.draw(screen)
 
-    if banana_active:
-        banana.draw(screen)  # Draw the banana
+        if banana_active:
+            banana.draw(screen)  # Draw the banana
 
-    if grape_active:
-        grape.draw(screen)  # Draw the grape
+        if grape_active:
+            grape.draw(screen)  # Draw the grape
 
-    # display the apple count
-    show_score()
+        # Draw snake and apple
+        for snake_pos in snake.snake[:-1]:
+            screen.blit(snake.skin, snake_pos)
+        screen.blit(snake.head, snake.snake[-1])
 
-    pygame.display.update()
+        # Draw the apple
+        apple.draw(screen)
+
+        # Display the apple count (score)
+        show_score()
+
+        pygame.display.update()
 
         # Check if new high score is achieved
-    if score > high_score:
-        high_score = score
-        save_high_score()  # Save the new high score to the file
+        if score > high_score:
+            high_score = score
+            save_high_score()  # Save the new high score to the file
 
     pygame.quit()
 
 
 # Call the game loop
 game_loop()
+
