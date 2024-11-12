@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from powerups import Banana, Grape
 from snake import *
 from apple import *
 from walls import *
@@ -19,6 +20,8 @@ clock = pygame.time.Clock()
 screen_size = 400  # Adjust according to your game screen dimensions
 snake = Snake(screen_size)
 apple = Apple()
+banana = Banana()
+grape = Grape()
 
 # Initialize walls
 walls = [
@@ -30,8 +33,18 @@ apple.set_random_position(screen_size, walls)
 
 # Apple count variable
 score  = 0
+banana_counter = 0
+grape_counter = 0
+apple_counter = 0
+banana_active = False
+grape_active = False
+banana_timer = 0
+grape_timer = 0
 
 high_score=0
+banana_lifespan = 5000
+grape_lifespan = 4000
+
 
 # Function to load high score from a file
 def load_high_score():
@@ -220,14 +233,59 @@ while GAME_ON:
         snake.snake_bigger()  # Make the snake grow
         SPEED += 0.5  # Increase speed
         score += 1  # Increment score
+        apple_counter += 1
+        banana_counter += 1
+        grape_counter += 1
 
-    # Draw snake and apple
+        # Check if the banana power-up should be activated
+        #if apple_counter == 3:
+        if banana_counter >= 3 and not banana_active:
+            banana.set_random_position(400, walls)
+            banana_active = True
+            banana_timer = pygame.time.get_ticks()  # Start the timer
+            banana_counter = 0 # Reset banana counter
+
+        # Check if the grape power-up should be activated
+        #if apple_counter == 5:
+        if grape_counter >= 5 and not grape_active:
+            grape.set_random_position(400, walls)
+            grape_active = True
+            grape_timer = pygame.time.get_ticks()  # Start the timer
+            grape_counter = 0 # Reset grape counter
+
+    # Check if snake eats banana
+    if banana_active and snake.snake_eat_banana(banana.position):
+        banana_active = False
+        score += 3  # Increment score
+        SPEED += 1
+
+    # Check if the banana power-up timer has expired
+    if banana_active and pygame.time.get_ticks() - banana_timer >= banana_lifespan:
+        banana_active = False
+
+    # Check if the grape power-up timer has expired
+    if grape_active and pygame.time.get_ticks() - grape_timer >= grape_lifespan:
+        grape_active = False
+
+    # Check if snake eats grape
+    if grape_active and snake.snake_eat_grape(grape.position):
+        grape_active = False
+        score += 5  # Increment score
+        SPEED += 1.5
+        
+    # Draw snake, banana, grape and apple
     for snake_pos in snake.snake[:-1]:
         screen.blit(snake.skin, snake_pos)
     screen.blit(snake.head, snake.snake[-1])
 
     # Draw the apple
     apple.draw(screen)  # Call the draw method for the apple
+
+    if banana_active:
+        banana.draw(screen)  # Draw the banana
+
+    if grape_active:
+        grape.draw(screen)  # Draw the grape
 
     # display the apple count
     show_score()

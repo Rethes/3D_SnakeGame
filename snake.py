@@ -48,6 +48,12 @@ class Snake:
     def snake_eat_apple(self, apple_pos):
         # Check if the head of the snake is at the same position as the apple
         return self.snake[-1] == apple_pos
+    
+    def snake_eat_banana(self, banana_pos):
+        return self.snake[-1] == banana_pos
+    
+    def snake_eat_grape(self, grape_pos):
+        return self.snake[-1] == grape_pos
 
     def snake_bigger(self):
         self.snake.insert(0, (self.snake[0]))
