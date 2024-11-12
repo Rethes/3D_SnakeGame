@@ -54,6 +54,10 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 8. Implement a high score feature
 
+9. Player can restart the game
+
+10. Add a start-up window with the name of the game
+
 
 ## <a name="quick-start">Quick Start</a>
 
@@ -92,7 +96,6 @@ python main.py
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
 
 ## <a name="Future Improvements"> Future Improvements</a> 
-- Show the player's score on the game over screen
-- Add a start-up window with the name of the game
-- Implement a high score feature
+- Add difficulty levels
+- Implement a background, snake skin and apple skin
 - Add power ups to the game; extra lives
