@@ -213,6 +213,7 @@ def game_over_screen():
 
 def game_loop():
     global GAME_ON, score, high_score, SPEED
+    global banana_active, grape_active 
 
     while GAME_ON:
         # Clear screen
@@ -303,7 +304,7 @@ def game_loop():
     screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
-        apple.draw(screen)
+    apple.draw(screen)
 
     if banana_active:
         banana.draw(screen)  # Draw the banana
@@ -314,12 +315,12 @@ def game_loop():
     # display the apple count
     show_score()
 
-        pygame.display.update()
+    pygame.display.update()
 
         # Check if new high score is achieved
-        if score > high_score:
-            high_score = score
-            save_high_score()  # Save the new high score to the file
+    if score > high_score:
+        high_score = score
+        save_high_score()  # Save the new high score to the file
 
     pygame.quit()
 
