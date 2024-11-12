@@ -229,18 +229,56 @@ def game_over_screen():
                     exit()
         pygame.time.delay(1000)  # Delay for 1 second to keep the game over screen visible before restart
 
-<<<<<<< HEAD
+difficulty_levels = {
+    "Easy": {"initial_speed": 8, "speed_increment": 0.3},
+    "Medium": {"initial_speed": 10, "speed_increment": 0.5},
+    "Hard": {"initial_speed": 12, "speed_increment": 0.8}
+}
 
+# Function to show difficulty selection menu
+def select_difficulty():
+    font = pygame.font.Font(None, 50)
+    title_text = font.render("Select Difficulty", True, WHITE)
+    title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 4))
 
+    font_small = pygame.font.Font(None, 40)
+    easy_text = font_small.render("1. Easy", True, WHITE)
+    medium_text = font_small.render("2. Medium", True, WHITE)
+    hard_text = font_small.render("3. Hard", True, WHITE)
 
-=======
->>>>>>> 590e54e81ad60741cc0b41c2a82f721d0a7054ae
+    easy_rect = easy_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    medium_rect = medium_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    hard_rect = hard_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+
+    screen.fill((0, 0, 0))
+    screen.blit(title_text, title_rect)
+    screen.blit(easy_text, easy_rect)
+    screen.blit(medium_text, medium_rect)
+    screen.blit(hard_text, hard_rect)
+
+    pygame.display.flip()
+
+    waiting_for_input = True
+    while waiting_for_input:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_1:
+                    return "Easy"
+                elif event.key == K_2:
+                    return "Medium"
+                elif event.key == K_3:
+                    return "Hard"
+
 def game_loop():
     global GAME_ON, score, high_score, SPEED
     global banana_active, banana_counter, grape_active, grape_counter, banana_timer, grape_timer, apple_counter
 
     # Show the splash screen at the start
     show_splash_screen()
+    difficulty = select_difficulty()
 
     while GAME_ON:
         # Clear screen
