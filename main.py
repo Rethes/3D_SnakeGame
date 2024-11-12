@@ -28,6 +28,7 @@ walls = [
 
 apple.set_random_position(screen_size, walls)
 
+
 # Apple count variable
 score  = 0
 
@@ -57,24 +58,22 @@ def save_high_score():
 
 def show_splash_screen():
     """Displays the splash screen with game title and instructions."""
-    screen.fill((0, 0, 0))  
+    screen.fill((0, 0, 0))
     font = pygame.font.Font(None, 50)
-    snake_xenzia_text = font.render("Snake Xenzia", True, WHITE)
+    snake_xenzia_text = font.render("Snake Game", True, WHITE)
     text_rect = snake_xenzia_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     loading = True
 
     screen.blit(snake_xenzia_text, text_rect)
-    pygame.display.flip() 
-    pygame.time.delay(3000)
+    pygame.display.flip()
+    pygame.time.delay(5000)
 
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_q:  # Press 'Q' to quit
-                loading = False
-                pygame.quit()
-                exit()
+                quit_screen()
 
-show_splash_screen()
+
 
 # Render and display the apple count
 def show_score():
@@ -135,21 +134,35 @@ def quit_screen():
                 elif event.key == K_n:  # Cancel quit
                     waiting_for_input = False  # Exit the quit screen and return to the game
 
-
 def restart_game():
-    """Restarts the game by reinitializing the game objects and variables."""
-    global snake, score, SPEED
-    snake = Snake(screen_size)  # Reset snake
-    apple.set_random_position(400, walls)  # Reset apple position
-    score = 0  # Reset score
-    SPEED = 10  # Reset speed
+    """Reinitializes the entire game, resetting pygame and restarting from scratch."""
+    global snake, apple, score, GAME_ON, SPEED
+    pygame.quit()
+    pygame.init()  # Reinitialize pygame
+
+    # Re-create the screen and clock
+    global screen, clock
+    screen = pygame.display.set_mode((400, 400))
+    clock = pygame.time.Clock()
+
+    # Reset game state variables
+    screen_size = 400
+    snake = Snake(screen_size)
+    apple = Apple()
+    apple.set_random_position(screen_size, walls)
+    score = 0
+    SPEED = 10
+    GAME_ON = True
+
+    # Re-run the main game loop
+    game_loop()
 
 def game_over_screen():
     """Displays the game-over screen and prompts for restart or exit with the score and the high score."""
     font = pygame.font.Font(None, 50)
     game_over_text = font.render("Game Over", True, RED)
-    score_text = font.render(f"Score: {score}", True, WHITE)  # Display score
-    high_score_text = font.render(f"High Score: {high_score}", True, WHITE)  # Display high score
+    score_text = font.render(f"Score: {score}", True, WHITE)
+    high_score_text = font.render(f"High Score: {high_score}", True, WHITE)
     text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
     score_rect = score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
@@ -159,15 +172,14 @@ def game_over_screen():
     restart_text = font_small.render("Press 'R' to restart or 'Q' to quit", True, WHITE)
     restart_rect = restart_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
 
-    screen.fill((0, 0, 0))  # Clear screen
+    screen.fill((0, 0, 0))
     screen.blit(game_over_text, text_rect)
     screen.blit(score_text, score_rect)
     screen.blit(high_score_text, high_score_rect)
     screen.blit(restart_text, restart_rect)
 
-    pygame.display.flip()  # Update display
+    pygame.display.flip()
 
-    # Wait for player input to restart or quit
     waiting_for_input = True
     while waiting_for_input:
         for event in pygame.event.get():
@@ -177,75 +189,82 @@ def game_over_screen():
             elif event.type == KEYDOWN:
                 if event.key == K_r:  # Restart game
                     waiting_for_input = False
-                    restart_game()
+                    restart_game()  # Restart the game
+                    return  # Exit the function after restarting
                 elif event.key == K_q:  # Quit game
                     pygame.quit()
                     exit()
-
-while GAME_ON:
-    # Clear screen
-    screen.fill((0, 0, 0))
-    clock.tick(SPEED)
-
-    snake.crawl()  # Update snake position
-    # print("Game loop running")
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            GAME_ON = False
-        elif event.type == KEYDOWN:
-            if event.key == K_p:  # Pause when 'P' is pressed
-                pause_game()
-            elif event.key == K_q:  # Press 'Q' to trigger quit screen
-                quit_screen()
-            elif event.key == K_r:  # Press 'R' to restart the game
-                if not GAME_ON:  # Only allow restart if the game is over
-                    restart_game()
-            elif event.key == K_UP and snake.direction != DOWN:
-                snake.direction = UP
-            elif event.key == K_LEFT and snake.direction != RIGHT:
-                snake.direction = LEFT
-            elif event.key == K_DOWN and snake.direction != UP:
-                snake.direction = DOWN
-            elif event.key == K_RIGHT and snake.direction != LEFT:
-                snake.direction = RIGHT
-
-    # Check for wall collisions and self collision
-    for wall in walls:
-        wall.draw(screen)  # Draw each wall
-        if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and snake.snake[-1][1] in range(wall.y,
-                                                                                        wall.y + wall.height):
-
-            game_over_screen()
-            GAME_ON = False
-
-    # Check if snake eats apple
-    if snake.snake_eat_apple(apple.position):
-        apple.set_random_position(400, walls)  # Set new random position for the apple
-        snake.snake_bigger()  # Make the snake grow
-        SPEED += 0.5  # Increase speed
-        score += 1  # Increment score
-
-    # Draw snake and apple
-    for snake_pos in snake.snake[:-1]:
-        screen.blit(snake.skin, snake_pos)
-    screen.blit(snake.head, snake.snake[-1])
-
-    # Draw the apple
-    apple.draw(screen)  # Call the draw method for the apple
-
-    # display the apple count
-    show_score()
-
-    pygame.display.update()
-
-     # Check if new high score is achieved
-    if score > high_score:
-        high_score = score
-        save_high_score()  # Save the new high score to the file
-
-
-pygame.quit()
+        pygame.time.delay(1000)  # Delay for 1 second to keep the game over screen visible before restart
 
 
 
+def game_loop():
+    global GAME_ON, score, high_score, SPEED
+
+    while GAME_ON:
+        # Clear screen
+        screen.fill((0, 0, 0))
+        clock.tick(SPEED)
+
+        # Update snake position
+        snake.crawl()
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                GAME_ON = False
+            elif event.type == KEYDOWN:
+                if event.key == K_p:  # Pause when 'P' is pressed
+                    pause_game()
+                elif event.key == K_q:  # Press 'Q' to trigger quit screen
+                    quit_screen()
+                elif event.key == K_r:  # Press 'R' to restart the game
+                    if not GAME_ON:  # Only allow restart if the game is over
+                        restart_game()
+                elif event.key == K_UP and snake.direction != DOWN:
+                    snake.direction = UP
+                elif event.key == K_LEFT and snake.direction != RIGHT:
+                    snake.direction = LEFT
+                elif event.key == K_DOWN and snake.direction != UP:
+                    snake.direction = DOWN
+                elif event.key == K_RIGHT and snake.direction != LEFT:
+                    snake.direction = RIGHT
+
+        # Check for wall collisions and self-collision
+        for wall in walls:
+            wall.draw(screen)  # Draw each wall
+            if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
+               snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
+                game_over_screen()
+                GAME_ON = False
+
+        # Check if snake eats apple
+        if snake.snake_eat_apple(apple.position):
+            apple.set_random_position(400, walls)  # Set new random position for the apple
+            snake.snake_bigger()  # Make the snake grow
+            SPEED += 0.5  # Increase speed
+            score += 1  # Increment score
+
+        # Draw snake and apple
+        for snake_pos in snake.snake[:-1]:
+            screen.blit(snake.skin, snake_pos)
+        screen.blit(snake.head, snake.snake[-1])
+
+        # Draw the apple
+        apple.draw(screen)
+
+        # Display the apple count (score)
+        show_score()
+
+        pygame.display.update()
+
+        # Check if new high score is achieved
+        if score > high_score:
+            high_score = score
+            save_high_score()  # Save the new high score to the file
+
+    pygame.quit()
+
+
+# Call the game loop
+game_loop()
