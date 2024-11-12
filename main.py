@@ -13,11 +13,11 @@ WHITE = (255, 255, 255)
 
 # Initialize pygame
 pygame.init()
-screen = pygame.display.set_mode((400, 400))
+screen = pygame.display.set_mode((600, 600))
 clock = pygame.time.Clock()
 
 # Create game objects
-screen_size = 400  # Adjust according to your game screen dimensions
+screen_size = 600  # Adjust according to your game screen dimensions
 snake = Snake(screen_size)
 apple = Apple()
 banana = Banana()
@@ -25,8 +25,8 @@ grape = Grape()
 
 # Initialize walls
 walls = [
-    Wall(100, 100, 200, 10),  # Horizontal inner wall
-    Wall(150, 250, 10, 100)   # Vertical inner wall
+    Wall(100, 100, 400, 10),  # Horizontal inner wall
+    Wall(150, 250, 10, 300)   # Vertical inner wall
 ]
 
 apple.set_random_position(screen_size, walls)
@@ -45,6 +45,47 @@ grape_timer = 0
 high_score=0
 banana_lifespan = 5000
 grape_lifespan = 4000
+
+
+def show_splash_screen():
+    """Displays the splash screen with the game title and instructions."""
+    font_large = pygame.font.Font(None, 70)
+    title_text = font_large.render("Snake Game", True, WHITE)
+    title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 4))
+
+    font_small = pygame.font.Font(None, 30)
+    instructions_text1 = font_small.render("Arrow Keys: Control the direction of the snake.", True, WHITE)
+    instructions_text2 = font_small.render("P Key: Pause the game. Press 'P' again to resume.", True, WHITE)
+    instructions_text3 = font_small.render("R Key: Restart the game if it’s over.", True, WHITE)
+    instructions_text4 = font_small.render("Q Key: Quit the game", True, WHITE)
+    font_small = pygame.font.Font(None, 40)
+    instructions_text5 = font_small.render("Press any key to start", True, WHITE)
+
+    instructions_rect1 = instructions_text1.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 60))
+    instructions_rect2 = instructions_text2.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 30))
+    instructions_rect3 = instructions_text3.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    instructions_rect4 = instructions_text4.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 30))
+    instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))  # Fifth instruction
+
+    screen.fill((0, 0, 0))  # Clear screen
+    screen.blit(title_text, title_rect)
+    screen.blit(instructions_text1, instructions_rect1)
+    screen.blit(instructions_text2, instructions_rect2)
+    screen.blit(instructions_text3, instructions_rect3)
+    screen.blit(instructions_text4, instructions_rect4)
+    screen.blit(instructions_text5, instructions_rect5)
+
+    pygame.display.flip()  # Update display
+
+    # Wait for player to press any key to start the game
+    waiting_for_input = True
+    while waiting_for_input:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == KEYDOWN:
+                waiting_for_input = False  # Start the game once any key is pressed
 
 
 # Function to load high score from a file
@@ -69,26 +110,6 @@ def save_high_score():
     with open("high_score.txt", "w") as file:
         file.write(str(high_score))
 
-def show_splash_screen():
-    """Displays the splash screen with game title and instructions."""
-    screen.fill((0, 0, 0))
-    font = pygame.font.Font(None, 50)
-    snake_xenzia_text = font.render("Snake Game", True, WHITE)
-    text_rect = snake_xenzia_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-    loading = True
-
-    screen.blit(snake_xenzia_text, text_rect)
-    pygame.display.flip()
-    pygame.time.delay(5000)
-
-    for event in pygame.event.get():
-        if event.type == KEYDOWN:
-            if event.key == K_q:  # Press 'Q' to quit
-                quit_screen()
-
-
-
-# Render and display the apple count
 def show_score():
     """Displays the score board."""
     font= pygame.font.Font(None,35)
@@ -155,11 +176,11 @@ def restart_game():
 
     # Re-create the screen and clock
     global screen, clock
-    screen = pygame.display.set_mode((400, 400))
+    screen = pygame.display.set_mode((600, 600))
     clock = pygame.time.Clock()
 
     # Reset game state variables
-    screen_size = 400
+    screen_size = 600
     snake = Snake(screen_size)
     apple = Apple()
     apple.set_random_position(screen_size, walls)
@@ -214,6 +235,9 @@ def game_over_screen():
 def game_loop():
     global GAME_ON, score, high_score, SPEED
     global banana_active, grape_active 
+
+    # Show the splash screen at the start
+    show_splash_screen()
 
     while GAME_ON:
         # Clear screen
