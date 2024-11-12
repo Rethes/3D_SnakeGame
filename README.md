@@ -15,6 +15,13 @@
 
 A **classic snake game**, developed using **Python** and **Pygame**. This project introduces several advanced mechanics to enhance gameplay, including:
 
+**Game Objects**
+- Snake: The player controls the snake and tries to grow it by eating     
+  apples.
+- Apple: Increases the snake’s size and score when eaten.
+- Banana: A power-up that appears after a certain number of apples are eaten. Gives a score boost and speed increase.
+- Grape: Another power-up that appears after eating more apples. Gives a bigger score boost and speed increase.
+
 - **Passing through walls**: The snake can move from one side of the screen to the other by passing through the walls, adding a new challenge.
 - **Self-collision-free snake**: The snake is immune to self-collisions, enabling more creative and complex movement.
 - **Challenging obstacles**: Obstacles are placed inside the arena to increase difficulty, requiring the player to maneuver carefully.
@@ -102,8 +109,10 @@ python main.py
 - apple.py - Handles the apple's appearance and random positioning on the screen.
 - walls.py - Defines the positions and dimensions of walls within the game.
 - main.py - The main game loop that integrates the snake, apples, and walls, and handles user inputs and game state.
+- powerups.py - 
 
 ## <a name="Future Improvements"> Future Improvements</a> 
 - Add difficulty levels
+- implement multiplayer mode
 - Implement a background, snake skin and apple skin
-- Add power ups to the game; extra lives
+- Add more power ups to the game
