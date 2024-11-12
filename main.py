@@ -46,45 +46,6 @@ high_score=0
 banana_lifespan = 5000
 grape_lifespan = 4000
 
-# def show_splash_screen():
-#     """Displays the splash screen with the game title and instructions."""
-#     font_large = pygame.font.Font(None, 70)
-#     title_text = font_large.render("Snake Game", True, WHITE)
-#     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 4))
-#
-#     font_small = pygame.font.Font(None, 30)
-#     instructions_text1 = font_small.render("Arrow Keys: Control the direction of the snake.", True, WHITE)
-#     instructions_text2 = font_small.render("P Key: Pause the game. Press 'P' again to resume.", True, WHITE)
-#     instructions_text3 = font_small.render("R Key: Restart the game if it’s over.", True, WHITE)
-#     instructions_text4 = font_small.render("Q Key: Quit the game", True, WHITE)
-#     font_small = pygame.font.Font(None, 40)
-#     instructions_text5 = font_small.render("Press any key to start", True, WHITE)
-#
-#     instructions_rect1 = instructions_text1.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 60))
-#     instructions_rect2 = instructions_text2.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 30))
-#     instructions_rect3 = instructions_text3.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-#     instructions_rect4 = instructions_text4.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 30))
-#     instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))  # Fifth instruction
-#
-#     screen.fill((0, 0, 0))  # Clear screen
-#     screen.blit(title_text, title_rect)
-#     screen.blit(instructions_text1, instructions_rect1)
-#     screen.blit(instructions_text2, instructions_rect2)
-#     screen.blit(instructions_text3, instructions_rect3)
-#     screen.blit(instructions_text4, instructions_rect4)
-#     screen.blit(instructions_text5, instructions_rect5)
-#
-#     pygame.display.flip()  # Update display
-#
-#     # Wait for player to press any key to start the game
-#     waiting_for_input = True
-#     while waiting_for_input:
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 exit()
-#             elif event.type == KEYDOWN:
-#                 waiting_for_input = False  # Start the game once any key is pressed
 
 def show_splash_screen():
     """Displays the splash screen with the game title and instructions."""
@@ -97,33 +58,34 @@ def show_splash_screen():
     instructions_text2 = font_small.render("P Key: Pause the game. Press 'P' again to resume.", True, WHITE)
     instructions_text3 = font_small.render("R Key: Restart the game if it’s over.", True, WHITE)
     instructions_text4 = font_small.render("Q Key: Quit the game", True, WHITE)
-    instructions_text5 = pygame.font.Font(None, 40).render("Press any key to start", True, WHITE)
+    font_small = pygame.font.Font(None, 40)
+    instructions_text5 = font_small.render("Press any key to start", True, WHITE)
 
     instructions_rect1 = instructions_text1.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 60))
     instructions_rect2 = instructions_text2.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 30))
     instructions_rect3 = instructions_text3.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
     instructions_rect4 = instructions_text4.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 30))
-    instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))
+    instructions_rect5 = instructions_text5.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 80))  # Fifth instruction
 
-    screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))  # Clear screen
     screen.blit(title_text, title_rect)
     screen.blit(instructions_text1, instructions_rect1)
     screen.blit(instructions_text2, instructions_rect2)
     screen.blit(instructions_text3, instructions_rect3)
     screen.blit(instructions_text4, instructions_rect4)
     screen.blit(instructions_text5, instructions_rect5)
-    pygame.display.flip()
 
+    pygame.display.flip()  # Update display
+
+    # Wait for player to press any key to start the game
     waiting_for_input = True
-    clock = pygame.time.Clock()
     while waiting_for_input:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
             elif event.type == KEYDOWN:
-                waiting_for_input = False
-        clock.tick(30)  # Ensure this loop runs at a reasonable frame rate
+                waiting_for_input = False  # Start the game once any key is pressed
 
 # Function to load high score from a file
 def load_high_score():
@@ -270,18 +232,6 @@ def game_over_screen():
 def game_loop():
     global GAME_ON, score, high_score, SPEED
     global banana_active, banana_counter, grape_active, grape_counter, banana_timer, grape_timer, apple_counter
-
-    # Show the splash screen at the start
-    show_splash_screen()
-
-    # Rest of your code...
-
-
-    # Show the splash screen at the start
-    show_splash_screen()
-
-    # Rest of your code...
-
 
     # Show the splash screen at the start
     show_splash_screen()
