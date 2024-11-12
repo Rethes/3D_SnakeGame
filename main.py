@@ -73,10 +73,8 @@ def show_splash_screen():
                 loading = False
                 pygame.quit()
                 exit()
-            
 
-
-show_splash_screen()          
+show_splash_screen()
 
 # Render and display the apple count
 def show_score():
@@ -84,47 +82,6 @@ def show_score():
     font= pygame.font.Font(None,35)
     score_text= font.render("Score:" +str(score), True, WHITE)
     screen.blit(score_text, (10,10)) #display score in the top left corner
-
-def game_over_screen():
-    """Displays the game-over screen and prompts for restart or exit with the score and the high score."""
-    font = pygame.font.Font(None, 50)
-    game_over_text = font.render("Game Over", True, RED)
-    #text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
-    score_text = font.render(f"Score: {score}", True, WHITE)  # Display score
-    high_score_text = font.render(f"High Score: {high_score}", True, WHITE)  # Display high score
-    text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
-    score_rect = score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
-    high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
-
-    screen.fill((0, 0, 0))  # Clear screen
-    #screen.blit(game_over_text, text_rect)  # Display text
-    screen.blit(game_over_text, text_rect)  # Display "Game Over" text
-    screen.blit(score_text, score_rect)  # Display score
-    screen.blit(high_score_text, high_score_rect)  # Display high score
-
-    #display prompt to restart or exit
-    font_small = pygame.font.Font(None, 30)
-    restart_text = font_small.render("Press 'R' to restart or 'Q' to quit", True, WHITE)
-    screen.blit(restart_text, (screen.get_width() // 2 - 150, screen.get_height() // 2 + 50))
-
-    pygame.display.flip()  # Update display
-
-    # Wait for player to press 'R' to restart or 'Q' to quit
-    waiting_for_input = True
-    while waiting_for_input:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == KEYDOWN:
-                if event.key == K_r:  # Restart game
-                    waiting_for_input = False
-                    restart_game()
-                    # return
-                elif event.key == K_q:  # Quit game
-                    pygame.quit()
-                    exit()
-   
 
 def pause_game():
     """Pauses the game until the player presses 'P' to resume."""
@@ -147,6 +104,38 @@ def pause_game():
 
     load_high_score()
 
+def quit_screen():
+    """Displays the quit confirmation screen and waits for user input to confirm or cancel quitting."""
+    font = pygame.font.Font(None, 30)
+    quit_text = font.render("Are you sure you want to quit?", True, RED)
+    text_rect = quit_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+
+    # Display instructions for the user
+    font_small = pygame.font.Font(None, 30)
+    confirm_text = font_small.render("Press 'Y' to confirm or 'N' to cancel", True, WHITE)
+    confirm_rect = confirm_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 20))
+
+    screen.fill((0, 0, 0))  # Clear screen
+    screen.blit(quit_text, text_rect)
+    screen.blit(confirm_text, confirm_rect)
+
+    pygame.display.flip()  # Update display
+
+    # Wait for player input to confirm or cancel quitting
+    waiting_for_input = True
+    while waiting_for_input:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_y:  # Confirm quit
+                    pygame.quit()
+                    exit()
+                elif event.key == K_n:  # Cancel quit
+                    waiting_for_input = False  # Exit the quit screen and return to the game
+
+
 def restart_game():
     """Restarts the game by reinitializing the game objects and variables."""
     global snake, score, SPEED
@@ -155,28 +144,43 @@ def restart_game():
     score = 0  # Reset score
     SPEED = 10  # Reset speed
 
-def end_game():
-    """Ends the game and exits the program."""
-    font = pygame.font.Font(None, 30)
-    end_gane_text = font.render("GAME ENDED!PRESS R TO RESTART", True, RED)
-    text_rect = end_gane_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+def game_over_screen():
+    """Displays the game-over screen and prompts for restart or exit with the score and the high score."""
+    font = pygame.font.Font(None, 50)
+    game_over_text = font.render("Game Over", True, RED)
+    score_text = font.render(f"Score: {score}", True, WHITE)  # Display score
+    high_score_text = font.render(f"High Score: {high_score}", True, WHITE)  # Display high score
+    text_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    score_rect = score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+    high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
 
-    # screen.blit(end_gane_text, (screen.get_width() // 2 - 70, screen.get_height() // 2))
-    # pygame.display.flip()  # Update display
+    # Display prompt to restart or exit
+    font_small = pygame.font.Font(None, 30)
+    restart_text = font_small.render("Press 'R' to restart or 'Q' to quit", True, WHITE)
+    restart_rect = restart_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 100))
 
-    ended = True
-    while ended:
-        screen.fill((0, 0, 0))  # Clear screen
-        screen.blit(end_gane_text, text_rect)  # Display paused text
-        pygame.display.flip()  # Update display
+    screen.fill((0, 0, 0))  # Clear screen
+    screen.blit(game_over_text, text_rect)
+    screen.blit(score_text, score_rect)
+    screen.blit(high_score_text, high_score_rect)
+    screen.blit(restart_text, restart_rect)
 
+    pygame.display.flip()  # Update display
+
+    # Wait for player input to restart or quit
+    waiting_for_input = True
+    while waiting_for_input:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
-            elif event.type == KEYDOWN and event.key == K_r:  # Press 'P' to resume
-                ended = False
-
+            elif event.type == KEYDOWN:
+                if event.key == K_r:  # Restart game
+                    waiting_for_input = False
+                    restart_game()
+                elif event.key == K_q:  # Quit game
+                    pygame.quit()
+                    exit()
 
 while GAME_ON:
     # Clear screen
@@ -192,10 +196,11 @@ while GAME_ON:
         elif event.type == KEYDOWN:
             if event.key == K_p:  # Pause when 'P' is pressed
                 pause_game()
-            elif event.key == K_r: # Restart when 'R' is pressed
-                restart_game()         
-            elif event.key == K_q: # Restart when 'R' is pressed
-                end_game()
+            elif event.key == K_q:  # Press 'Q' to trigger quit screen
+                quit_screen()
+            elif event.key == K_r:  # Press 'R' to restart the game
+                if not GAME_ON:  # Only allow restart if the game is over
+                    restart_game()
             elif event.key == K_UP and snake.direction != DOWN:
                 snake.direction = UP
             elif event.key == K_LEFT and snake.direction != RIGHT:
