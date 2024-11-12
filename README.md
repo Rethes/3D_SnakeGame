@@ -63,7 +63,7 @@ The main objective is to control the snake, collect apples, and achieve the high
 
 9. Player can restart the game
 
-10. Add a start-up window with the name of the game
+10. Add a splash screen with the name of the game
 
 
 ## <a name="quick-start">Quick Start</a>
@@ -107,4 +107,3 @@ python main.py
 - Add difficulty levels
 - Implement a background, snake skin and apple skin
 - Add power ups to the game; extra lives
-zz
