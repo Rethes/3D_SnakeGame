@@ -4,15 +4,16 @@ UP = 0
 DOWN = 1
 LEFT = 2
 RIGHT = 3
+BLUE = (17, 85, 204)
 
 class Snake:
 
     def __init__(self, screen_size=400, lives=3):
         self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
         self.skin = pygame.Surface((10, 10))
-        self.skin.fill((255, 255, 255))
+        self.skin.fill(BLUE)
         self.head = pygame.Surface((10, 10))
-        self.head.fill((200, 200, 200))
+        self.head.fill(BLUE)
         self.direction = RIGHT
         self.screen_size = screen_size  # Save screen size for wrap-around effect
         self.lives = lives  # Initialize number of lives
@@ -114,3 +115,23 @@ class Snake:
     def get_lives(self):
         """Return the number of lives remaining."""
         return self.lives
+
+    def change_direction(self, new_direction):
+        """Change the snake's direction with a sound effect."""
+        if (
+                (new_direction == UP and self.direction != DOWN) or
+                (new_direction == DOWN and self.direction != UP) or
+                (new_direction == LEFT and self.direction != RIGHT) or
+                (new_direction == RIGHT and self.direction != LEFT)
+        ):
+            self.direction = new_direction
+            self.move_sound.play()  # Play movement sound
+
+    def check_self_collision(self):
+        """Check if the snake collides with itself."""
+        head = self.snake[-1]  # The head is the last element in the snake's body
+        # Check if the head's position matches any of the body parts
+        for segment in self.snake[:-1]:  # Skip checking the head
+            if head == segment:
+                return True  # Collision with itself
+        return False

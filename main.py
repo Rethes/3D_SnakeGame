@@ -30,7 +30,6 @@ grape = Grape()
 walls = [
     Wall(0, 60, SCREEN_WIDTH, 10),
     Wall(0, SCREEN_HEIGHT - 10, SCREEN_WIDTH, 10),
-    Wall(150, 250, 10, 300)
 ]
 
 apple.set_random_position(screen_size, walls)
@@ -151,7 +150,7 @@ def show_score():
 
     # Display the images at the top left corner
     screen.blit(apple_image, (10, 10))  # Display the apple image
-    screen.blit(trophy_image, (100, 10))  # Display the trophy image
+    screen.blit(trophy_image, (150, 10))  # Display the trophy image
 
     # Display the score and high score next to their respective images
     font = pygame.font.Font(None, 50)
@@ -160,7 +159,20 @@ def show_score():
 
     # Display the score and high score next to their respective images
     screen.blit(score_text, (60, 18))  # Display the score next to the apple image
-    screen.blit(high_score_text, (150, 18))  # Display the high score next to the trophy image
+    screen.blit(high_score_text, (200, 18))  # Display the high score next to the trophy image
+
+def add_border_outline():
+    # Draw the border (outline)
+    border_thickness = 65
+
+    # Load the image you want to use for the top border
+    border_image = pygame.image.load("Graphics/grass.jpg")
+
+    # Scale the image to the required size (e.g., the full width of the screen and the border thickness)
+    border_image = pygame.transform.scale(border_image, (SCREEN_WIDTH, border_thickness))
+
+    # Blit the image to the screen at the top
+    screen.blit(border_image, (0, 0))
 
 def pause_game():
     """Pauses the game until the player presses 'P' to resume."""
@@ -333,17 +345,7 @@ def game_loop():
         # Clear screen by drawing the background
         screen.blit(background_image, background_rect)  # Draw background image
 
-        # Draw the border (outline)
-        border_thickness = 65
-
-        # Load the image you want to use for the top border
-        border_image = pygame.image.load("Graphics/grass.jpg")
-
-        # Scale the image to the required size (e.g., the full width of the screen and the border thickness)
-        border_image = pygame.transform.scale(border_image, (SCREEN_WIDTH, border_thickness))
-
-        # Blit the image to the screen at the top
-        screen.blit(border_image, (0, 0))
+        add_border_outline()
 
         clock.tick(SPEED)
 
@@ -362,14 +364,15 @@ def game_loop():
                 elif event.key == K_r:  # Press 'R' to restart the game
                     if not GAME_ON:  # Only allow restart if the game is over
                         restart_game()
-                elif event.key == K_UP and snake.direction != DOWN:
-                    snake.direction = UP
-                elif event.key == K_LEFT and snake.direction != RIGHT:
-                    snake.direction = LEFT
-                elif event.key == K_DOWN and snake.direction != UP:
-                    snake.direction = DOWN
-                elif event.key == K_RIGHT and snake.direction != LEFT:
-                    snake.direction = RIGHT
+                elif event.type == KEYDOWN:
+                    if event.key == K_UP:
+                        snake.change_direction(UP)
+                    elif event.key == K_DOWN:
+                        snake.change_direction(DOWN)
+                    elif event.key == K_LEFT:
+                        snake.change_direction(LEFT)
+                    elif event.key == K_RIGHT:
+                        snake.change_direction(RIGHT)
 
         # Check for wall collisions and self-collision
         for wall in walls:
@@ -379,16 +382,23 @@ def game_loop():
                     snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
                 collision_sound.play()  # Play collision sound
                 lives -= 1  # Decrease the number of lives
-                if lives <= 0:
-                    game_over_screen()  # Show game over screen when no lives are left
-                    GAME_ON = False  # End the game
+                if lives > 0:
+                    # Reset position without shrinking the snake
+                    snake.snake = [(screen_size // 2, screen_size // 2) for _ in range(len(snake.snake))]
+                    snake.direction = RIGHT  # Reset direction to default
                 else:
-                    # Reset snake to initial position after collision (optional)
-                    snake = Snake(screen_size)  # Reset snake position
-                    apple.set_random_position(screen_size, walls)  # Reset apple position
-                    break  # Stop the loop after collision
+                    game_over_screen()
 
-
+        # Check for self-collision
+        if snake.check_self_collision():
+            collision_sound.play()  # Play collision sound
+            lives -= 1  # Decrease the number of lives
+            if lives > 0:
+                # Reset position without shrinking the snake
+                snake.snake = [(screen_size // 2, screen_size // 2) for _ in range(len(snake.snake))]
+                snake.direction = RIGHT  # Reset direction to default
+            else:
+                game_over_screen()
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
             apple.set_random_position(400, walls)  # Set new random position for the apple
