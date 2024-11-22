@@ -46,6 +46,9 @@ high_score=0
 banana_lifespan = 5000
 grape_lifespan = 4000
 
+# Initialize lives
+lives = 3  # Starting lives
+
 # Load sound effects
 collision_sound = pygame.mixer.Sound("sound/gameover.mp3")
 
@@ -92,6 +95,22 @@ def show_splash_screen():
                 exit()
             elif event.type == KEYDOWN:
                 waiting_for_input = False  # Start the game once any key is pressed
+
+# Function to display lives on the screen
+def show_lives(lives):
+    """Displays the number of lives left in the game."""
+    try:
+        heart_image = pygame.image.load("Graphics/heart.png")
+        heart_image = pygame.transform.scale(heart_image, (40, 40))  # Scale the image
+    except pygame.error as e:
+        print(f"Error loading image: {e}")
+        return  # Exit function if image loading fails
+    # Padding between the hearts and the edge of the screen
+    padding = 10
+
+    # Display the heart icon for each life with padding
+    for i in range(lives):
+        screen.blit(heart_image, (screen.get_width() - 40 * (i + 1) - padding, 10))  # Adjusted for padding
 
 # Function to load high score from a file
 def load_high_score():
@@ -192,7 +211,7 @@ def quit_screen():
 
 def restart_game():
     """Reinitializes the entire game, resetting pygame and restarting from scratch."""
-    global snake, apple, score, GAME_ON, SPEED
+    global snake, apple, score, GAME_ON, SPEED, lives
     pygame.quit()
     pygame.init()  # Reinitialize pygame
 
@@ -209,8 +228,9 @@ def restart_game():
     score = 0
     SPEED = 10
     GAME_ON = True
+    GAME_ON = True
+    lives = 3
 
-    # Re-run the main game loop
     game_loop()
 
 def game_over_screen():
@@ -296,7 +316,7 @@ def select_difficulty():
                     return "Hard"
 
 def game_loop():
-    global GAME_ON, score, high_score, SPEED
+    global GAME_ON, score, high_score, SPEED, snake, lives
     global banana_active, banana_counter, grape_active, grape_counter, banana_timer, grape_timer, apple_counter
 
     # Show the splash screen at the start
@@ -340,8 +360,16 @@ def game_loop():
             if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
                     snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
                 collision_sound.play()  # Play collision sound
-                game_over_screen()  # Show game over screen
-                GAME_ON = False  # End the game
+                lives -= 1  # Decrease the number of lives
+                if lives <= 0:
+                    game_over_screen()  # Show game over screen when no lives are left
+                    GAME_ON = False  # End the game
+                else:
+                    # Reset snake to initial position after collision (optional)
+                    snake = Snake(screen_size)  # Reset snake position
+                    apple.set_random_position(screen_size, walls)  # Reset apple position
+                    break  # Stop the loop after collision
+
 
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
@@ -370,7 +398,7 @@ def game_loop():
                 grape_counter = 0  # Reset grape counter
 
         # Check if snake eats banana
-        if banana_active and snake.body_eat_banana(banana.position):
+        if banana_active and snake.snake_eat_banana(banana.position):
             banana_active = False
             score += 3  # Increment score
             SPEED += 1
@@ -410,6 +438,9 @@ def game_loop():
 
         # Draw the apple
         apple.draw(screen)
+
+        # Display the number of lives left
+        show_lives(lives)
 
         # Display the apple count (score)
         show_score()

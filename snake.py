@@ -7,7 +7,7 @@ RIGHT = 3
 
 class Snake:
 
-    def __init__(self, screen_size=400):
+    def __init__(self, screen_size=400, lives=3):
         self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
         self.skin = pygame.Surface((10, 10))
         self.skin.fill((255, 255, 255))
@@ -15,6 +15,7 @@ class Snake:
         self.head.fill((200, 200, 200))
         self.direction = RIGHT
         self.screen_size = screen_size  # Save screen size for wrap-around effect
+        self.lives = lives  # Initialize number of lives
 
         # Load sound effects
         self.crunch_sound = pygame.mixer.Sound('sound/food.mp3')
@@ -40,6 +41,35 @@ class Snake:
         # Add new head position to the snake and remove the tail
         self.snake.append((x, y))
         self.snake.pop(0)
+
+        # Check for collision with itself or boundary
+        self.check_collisions()
+
+    def check_collisions(self):
+        """Check if the snake collides with itself or the wall."""
+        head_x, head_y = self.snake[-1]
+
+        # Collision with snake's own body
+        if (head_x, head_y) in self.snake[:-1]:
+            self.lose_life()
+
+        # Collision with boundaries (if the snake goes out of bounds and doesn't wrap)
+        if head_x < 0 or head_y < 0 or head_x >= self.screen_size or head_y >= self.screen_size:
+            self.lose_life()
+
+    def lose_life(self):
+        """Reduce lives when the snake collides."""
+        self.lives -= 1
+        if self.lives <= 0:
+            print("Game Over!")
+            self.reset_game()
+
+    def reset_game(self):
+        """Reset the game when all lives are lost."""
+        print("Resetting game...")
+        self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
+        self.direction = RIGHT
+        self.lives = 3  # Reset lives
 
     def snake_eat_apple(self, apple_pos, apple_size=40):
         """Check if the snake eats an apple."""
@@ -80,3 +110,7 @@ class Snake:
     def snake_bigger(self):
         """Make the snake grow larger."""
         self.snake.insert(0, (self.snake[0]))
+
+    def get_lives(self):
+        """Return the number of lives remaining."""
+        return self.lives
