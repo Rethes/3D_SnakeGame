@@ -1,7 +1,10 @@
 import pygame
 
+RED = (255, 0, 0)
+DARK_GREEN = (74,117,44)
+
 class Wall:
-    def __init__(self, x, y, width, height, color=(255, 0, 0)):
+    def __init__(self, x, y, width, height, color=DARK_GREEN):
         self.rect = pygame.Rect(x, y, width, height)
         self.x = x
         self.y = y
