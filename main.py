@@ -9,10 +9,14 @@ SPEED = 10
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
+DARK_GREEN = (74,117,44)
+
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 600
 
 # Initialize pygame
 pygame.init()
-screen = pygame.display.set_mode((600, 600))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
 # Create game objects
@@ -22,10 +26,11 @@ apple = Apple()
 banana = Banana()
 grape = Grape()
 
-# Initialize walls
+# Initialize walls - easy level
 walls = [
-    Wall(100, 100, 400, 10),  # Horizontal inner wall
-    Wall(150, 250, 10, 300)   # Vertical inner wall
+    Wall(0, 60, SCREEN_WIDTH, 10),
+    Wall(0, SCREEN_HEIGHT - 10, SCREEN_WIDTH, 10),
+    Wall(150, 250, 10, 300)
 ]
 
 apple.set_random_position(screen_size, walls)
@@ -322,10 +327,23 @@ def game_loop():
     # Show the splash screen at the start
     show_splash_screen()
     difficulty = select_difficulty()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     while GAME_ON:
         # Clear screen by drawing the background
         screen.blit(background_image, background_rect)  # Draw background image
+
+        # Draw the border (outline)
+        border_thickness = 65
+
+        # Load the image you want to use for the top border
+        border_image = pygame.image.load("Graphics/grass.jpg")
+
+        # Scale the image to the required size (e.g., the full width of the screen and the border thickness)
+        border_image = pygame.transform.scale(border_image, (SCREEN_WIDTH, border_thickness))
+
+        # Blit the image to the screen at the top
+        screen.blit(border_image, (0, 0))
 
         clock.tick(SPEED)
 

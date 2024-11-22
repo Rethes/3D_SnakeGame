@@ -8,31 +8,49 @@ class Fruit:
         self.size = size
         self.position = (0, 0)  # Initial position
 
+    # def set_random_position(self, screen_size, walls):
+    #     """Set a random position for the fruit, ensuring it doesn't overlap with walls."""
+    #     width, height = self.size  # Unpack the fruit's size tuple into width and height
+    #
+    #     while True:
+    #         # Generate random x and y coordinates for the top-left corner of the fruit
+    #         self.x = random.randint(0, screen_size - width)
+    #         self.y = random.randint(0, screen_size - height)
+    #
+    #         # Check for overlap with any walls
+    #         overlaps_wall = False
+    #         for wall in walls:
+    #             if (
+    #                     self.x + width > wall.x and self.x < wall.x + wall.width and
+    #                     self.y + height > wall.y and self.y < wall.y + wall.height
+    #             ):
+    #                 overlaps_wall = True
+    #                 break
+    #
+    #         # If it doesn't overlap with any wall, break the loop
+    #         if not overlaps_wall:
+    #             break
+    #
+    #     # Update the position tuple
+    #     self.position = (self.x, self.y)
+
+    # In each fruit class (Apple, Banana, Grape), modify the set_random_position() method
     def set_random_position(self, screen_size, walls):
-        """Set a random position for the fruit, ensuring it doesn't overlap with walls."""
-        width, height = self.size  # Unpack the fruit's size tuple into width and height
+        """Sets a random position for the fruit, ensuring it is not within the outline area or on the walls."""
+        global x,y
+        valid_position = False
+        while not valid_position:
+            # Generate random position within the screen area minus the border (100px)
+            x = random.randint(100, screen_size - 100)
+            y = random.randint(100, screen_size - 100)
 
-        while True:
-            # Generate random x and y coordinates for the top-left corner of the fruit
-            self.x = random.randint(0, screen_size - width)
-            self.y = random.randint(0, screen_size - height)
-
-            # Check for overlap with any walls
-            overlaps_wall = False
+            # Check if the position is within any wall or the outline area
+            valid_position = True
             for wall in walls:
-                if (
-                        self.x + width > wall.x and self.x < wall.x + wall.width and
-                        self.y + height > wall.y and self.y < wall.y + wall.height
-                ):
-                    overlaps_wall = True
-                    break
-
-            # If it doesn't overlap with any wall, break the loop
-            if not overlaps_wall:
-                break
-
-        # Update the position tuple
-        self.position = (self.x, self.y)
+                if wall.x <= x <= wall.x + wall.width and wall.y <= y <= wall.y + wall.height:
+                    valid_position = False
+                    break  # Position is on a wall, try again
+        self.position = (x, y)
 
     def check_collision(self, wall):
         """Check if the fruit's position collides with the wall."""
