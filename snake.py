@@ -5,7 +5,6 @@ DOWN = 1
 LEFT = 2
 RIGHT = 3
 
-
 class Snake:
 
     def __init__(self, screen_size=400):
@@ -16,6 +15,10 @@ class Snake:
         self.head.fill((200, 200, 200))
         self.direction = RIGHT
         self.screen_size = screen_size  # Save screen size for wrap-around effect
+
+        # Load sound effects
+        self.crunch_sound = pygame.mixer.Sound('sound/food.mp3')
+        self.move_sound = pygame.mixer.Sound('sound/move.mp3')
 
     def crawl(self):
         x, y = self.snake[-1]  # Get current head position
@@ -38,22 +41,42 @@ class Snake:
         self.snake.append((x, y))
         self.snake.pop(0)
 
-    def self_collision(self):
-        return self.snake[-1] in self.snake[0:-1]
+    def snake_eat_apple(self, apple_pos, apple_size=40):
+        """Check if the snake eats an apple."""
+        head_x, head_y = self.snake[-1]
+        apple_x, apple_y = apple_pos
+        if (
+            apple_x <= head_x < apple_x + apple_size and
+            apple_y <= head_y < apple_y + apple_size
+        ):
+            self.crunch_sound.play()  # Play eating sound
+            return True
+        return False
 
-    def wall_collision(self, screen_size):
-        return self.snake[len(self.snake) - 1][0] >= screen_size or self.snake[len(self.snake) - 1][0] < 0 or \
-            self.snake[len(self.snake) - 1][1] >= screen_size or self.snake[len(self.snake) - 1][1] < 0
+    def snake_eat_banana(self, banana_pos, banana_size=40):
+        """Check if the snake eats a banana."""
+        head_x, head_y = self.snake[-1]
+        banana_x, banana_y = banana_pos
+        if (
+            banana_x <= head_x < banana_x + banana_size and
+            banana_y <= head_y < banana_y + banana_size
+        ):
+            self.crunch_sound.play()  # Play eating sound
+            return True
+        return False
 
-    def snake_eat_apple(self, apple_pos):
-        # Check if the head of the snake is at the same position as the apple
-        return self.snake[-1] == apple_pos
-    
-    def snake_eat_banana(self, banana_pos):
-        return self.snake[-1] == banana_pos
-    
-    def snake_eat_grape(self, grape_pos):
-        return self.snake[-1] == grape_pos
+    def snake_eat_grape(self, grape_pos, grape_size=40):
+        """Check if the snake eats a grape."""
+        head_x, head_y = self.snake[-1]
+        grape_x, grape_y = grape_pos
+        if (
+            grape_x <= head_x < grape_x + grape_size and
+            grape_y <= head_y < grape_y + grape_size
+        ):
+            self.crunch_sound.play()  # Play eating sound
+            return True
+        return False
 
     def snake_bigger(self):
+        """Make the snake grow larger."""
         self.snake.insert(0, (self.snake[0]))

@@ -1,8 +1,7 @@
 import pygame
 from pygame.locals import *
-from powerups import Banana, Grape
+from fruit import Banana, Grape, Apple
 from snake import *
-from apple import *
 from walls import *
 
 GAME_ON = True
@@ -30,7 +29,8 @@ walls = [
 ]
 
 apple.set_random_position(screen_size, walls)
-
+banana.set_random_position(screen_size, walls)
+grape.set_random_position(screen_size, walls)
 
 # Apple count variable
 score  = 0
@@ -46,6 +46,12 @@ high_score=0
 banana_lifespan = 5000
 grape_lifespan = 4000
 
+# Load sound effects
+collision_sound = pygame.mixer.Sound("sound/gameover.mp3")
+
+# Load background image
+background_image = pygame.transform.scale(pygame.image.load("Graphics/grass.jpg"), (screen.get_width(), screen.get_height()))
+background_rect = background_image.get_rect()
 
 def show_splash_screen():
     """Displays the splash screen with the game title and instructions."""
@@ -110,10 +116,27 @@ def save_high_score():
         file.write(str(high_score))
 
 def show_score():
-    """Displays the score board."""
-    font= pygame.font.Font(None,35)
-    score_text= font.render("Score:" +str(score), True, WHITE)
-    screen.blit(score_text, (10,10)) #display score in the top left corner
+    """Displays the apple image, trophy image, and score with walls around it."""
+    # Load and display the apple and trophy images
+    apple_image = pygame.image.load('Graphics/apple.png')  # Load the apple image
+    trophy_image = pygame.image.load('Graphics/trophy.png')  # Load the trophy image
+
+    # Scale both images
+    apple_image = pygame.transform.scale(apple_image, (40, 40))  # Scale the apple image
+    trophy_image = pygame.transform.scale(trophy_image, (40, 40))  # Scale the trophy image
+
+    # Display the images at the top left corner
+    screen.blit(apple_image, (10, 10))  # Display the apple image
+    screen.blit(trophy_image, (100, 10))  # Display the trophy image
+
+    # Display the score and high score next to their respective images
+    font = pygame.font.Font(None, 50)
+    score_text = font.render(str(score), True, WHITE)
+    high_score_text = font.render(str(high_score), True, WHITE)
+
+    # Display the score and high score next to their respective images
+    screen.blit(score_text, (60, 18))  # Display the score next to the apple image
+    screen.blit(high_score_text, (150, 18))  # Display the high score next to the trophy image
 
 def pause_game():
     """Pauses the game until the player presses 'P' to resume."""
@@ -281,8 +304,9 @@ def game_loop():
     difficulty = select_difficulty()
 
     while GAME_ON:
-        # Clear screen
-        screen.fill((0, 0, 0))
+        # Clear screen by drawing the background
+        screen.blit(background_image, background_rect)  # Draw background image
+
         clock.tick(SPEED)
 
         # Update snake position
@@ -312,10 +336,12 @@ def game_loop():
         # Check for wall collisions and self-collision
         for wall in walls:
             wall.draw(screen)  # Draw each wall
+            # Check if snake's head is inside the wall bounds
             if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
-               snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
-                game_over_screen()
-                GAME_ON = False
+                    snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
+                collision_sound.play()  # Play collision sound
+                game_over_screen()  # Show game over screen
+                GAME_ON = False  # End the game
 
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
@@ -344,7 +370,7 @@ def game_loop():
                 grape_counter = 0  # Reset grape counter
 
         # Check if snake eats banana
-        if banana_active and snake.snake_eat_banana(banana.position):
+        if banana_active and snake.body_eat_banana(banana.position):
             banana_active = False
             score += 3  # Increment score
             SPEED += 1
@@ -366,7 +392,7 @@ def game_loop():
         # Draw snake, banana, grape and apple
         for snake_pos in snake.snake[:-1]:
             screen.blit(snake.skin, snake_pos)
-        screen.blit(snake.head, snake.snake[-1])
+            screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
         apple.draw(screen)
@@ -380,7 +406,7 @@ def game_loop():
         # Draw snake and apple
         for snake_pos in snake.snake[:-1]:
             screen.blit(snake.skin, snake_pos)
-        screen.blit(snake.head, snake.snake[-1])
+            screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
         apple.draw(screen)
@@ -396,7 +422,6 @@ def game_loop():
             save_high_score()  # Save the new high score to the file
 
     pygame.quit()
-
 
 # Call the game loop
 game_loop()
