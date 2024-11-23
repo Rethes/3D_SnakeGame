@@ -38,16 +38,16 @@ class Fruit:
 class Banana(Fruit):
     def __init__(self):
         # Pass specific details to the Fruit base class
-        Fruit.__init__(self, 'Graphics/banana.png', size=(40, 40))
+        Fruit.__init__(self, 'graphics/banana.png', size=(40, 40))
 
 # Grape class inherits from Fruit
 class Grape(Fruit):
     def __init__(self):
         # Pass specific details to the Fruit base class
-        Fruit.__init__(self, 'Graphics/grape.png', size=(40, 40))
+        Fruit.__init__(self, 'graphics/grape.png', size=(40, 40))
 
 # Apple class inherits from Fruit
 class Apple(Fruit):
     def __init__(self):
         # Pass specific details to the Fruit base class
-        Fruit.__init__(self, 'Graphics/apple.png', size=(40, 40))
+        Fruit.__init__(self, 'graphics/apple.png', size=(40, 40))

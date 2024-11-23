@@ -1,4 +1,5 @@
 import pygame
+from pygame import Vector2
 
 UP = 0
 DOWN = 1
@@ -9,18 +10,60 @@ BLUE = (17, 85, 204)
 class Snake:
 
     def __init__(self, screen_size=400, lives=3):
-        self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
-        self.skin = pygame.Surface((10, 10))
-        self.skin.fill(BLUE)
-        self.head = pygame.Surface((10, 10))
-        self.head.fill(BLUE)
-        self.direction = RIGHT
+        # Create the head with a rounded shape, eyes, and a mouth
+        self.snake = [Vector2(5, 10), Vector2(4, 10), Vector2(3, 10)]
+
+        # Dimensions for the head, body, and tail
+        self.block_size = 20  # Adjust size for a larger, rounded head
+
+        # Create a rounded head
+        self.head = pygame.Surface((self.block_size, self.block_size), pygame.SRCALPHA)  # Enable transparency
+        pygame.draw.circle(self.head, (0, 0, 255), (self.block_size // 2, self.block_size // 2),
+                           self.block_size // 2)  # Blue rounded head
+
+        # Add eyes to the rounded head
+        pygame.draw.circle(self.head, (255, 255, 255), (self.block_size // 3, self.block_size // 3),
+                           self.block_size // 6)  # Left eye (white)
+        pygame.draw.circle(self.head, (255, 255, 255), ((self.block_size * 2) // 3, self.block_size // 3),
+                           self.block_size // 6)  # Right eye (white)
+        pygame.draw.circle(self.head, (0, 0, 0), (self.block_size // 3, self.block_size // 3),
+                           self.block_size // 12)  # Left pupil (black)
+        pygame.draw.circle(self.head, (0, 0, 0), ((self.block_size * 2) // 3, self.block_size // 3),
+                           self.block_size // 12)  # Right pupil (black)
+
+        # Add a mouth (a smiling arc) to the snake's head
+        mouth_rect = pygame.Rect(self.block_size // 4, self.block_size // 2, self.block_size // 2, self.block_size // 4)
+        pygame.draw.arc(self.head, (0, 0, 0), mouth_rect, 3.14, 0, 2)  # Black smile arc (smiling mouth)
+
+        # Create the body as a rectangle for now (can also be rounded if needed)
+        self.skin = pygame.Surface((self.block_size, self.block_size))
+        self.skin.fill((0, 0, 255))  # Blue body
+
+        # Create a rounded tail (same logic as the head)
+        self.tail = pygame.Surface((self.block_size, self.block_size), pygame.SRCALPHA)  # Enable transparency
+        pygame.draw.circle(self.tail, (0, 0, 255), (self.block_size // 2, self.block_size // 2),
+                           self.block_size // 2)  # Blue rounded tail
+
+        self.direction = Vector2(1, 0)  # Default direction
         self.screen_size = screen_size  # Save screen size for wrap-around effect
         self.lives = lives  # Initialize number of lives
+        self.new_block = False
 
         # Load sound effects
         self.crunch_sound = pygame.mixer.Sound('sound/food.mp3')
         self.move_sound = pygame.mixer.Sound('sound/move.mp3')
+
+    def draw(self, screen):
+        """Draws the snake on the screen."""
+        for i, snake_pos in enumerate(self.snake[:-1]):
+            # If it's the first segment, draw the head
+            if i == 0:
+                screen.blit(self.head, snake_pos)
+            # Otherwise, draw the body
+            else:
+                screen.blit(self.skin, snake_pos)
+        # Draw the tail (the last segment)
+        screen.blit(self.tail, self.snake[0])
 
     def crawl(self):
         x, y = self.snake[-1]  # Get current head position
@@ -39,24 +82,33 @@ class Snake:
         x = x % self.screen_size
         y = y % self.screen_size
 
-        # Add new head position to the snake and remove the tail
+        # Add new head position to the snake
         self.snake.append((x, y))
-        self.snake.pop(0)
 
-        # Check for collision with itself or boundary
-        self.check_collisions()
+        # Check for collision with the wall or itself
+        self.wall_collision()
+        # self.self_collision()
 
-    def check_collisions(self):
-        """Check if the snake collides with itself or the wall."""
+        # If no collision, remove the tail
+        if not (self.snake[-1] in self.snake[:-1]):
+            self.snake.pop(0)
+
+    def wall_collision(self):
+        """Check if the snake collides with the wall."""
+        head_x, head_y = self.snake[-1]
+
+        # Collision with boundaries (if the snake goes out of bounds and doesn't wrap)
+        if head_x < 0 or head_y < 0 or head_x >= self.screen_size or head_y >= self.screen_size:
+            self.lose_life()
+
+    def self_collision(self):
+        """Check if the snake collides with itself."""
         head_x, head_y = self.snake[-1]
 
         # Collision with snake's own body
         if (head_x, head_y) in self.snake[:-1]:
             self.lose_life()
 
-        # Collision with boundaries (if the snake goes out of bounds and doesn't wrap)
-        if head_x < 0 or head_y < 0 or head_x >= self.screen_size or head_y >= self.screen_size:
-            self.lose_life()
 
     def lose_life(self):
         """Reduce lives when the snake collides."""
@@ -66,7 +118,7 @@ class Snake:
             self.reset_game()
 
     def reset_game(self):
-        """Reset the game when all lives are lost."""
+        """Rest the game when all lives are lost."""
         print("Resetting game...")
         self.snake = [(200, 200), (210, 200), (220, 200), (230, 200), (240, 200)]
         self.direction = RIGHT
@@ -126,15 +178,6 @@ class Snake:
         ):
             self.direction = new_direction
             self.move_sound.play()  # Play movement sound
-
-    def check_self_collision(self):
-        """Check if the snake collides with itself."""
-        head = self.snake[-1]  # The head is the last element in the snake's body
-        # Check if the head's position matches any of the body parts
-        for segment in self.snake[:-1]:  # Skip checking the head
-            if head == segment:
-                return True  # Collision with itself
-        return False
 
     def reset_position(self, screen_size):
         """Resets the snake's position to the center of the screen."""

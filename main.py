@@ -57,7 +57,7 @@ lives = 3  # Starting lives
 collision_sound = pygame.mixer.Sound("sound/gameover.mp3")
 
 # Load background image
-background_image = pygame.transform.scale(pygame.image.load("Graphics/grass.jpg"), (screen.get_width(), screen.get_height()))
+background_image = pygame.transform.scale(pygame.image.load("graphics/grass.jpg"), (screen.get_width(), screen.get_height()))
 background_rect = background_image.get_rect()
 
 def show_splash_screen():
@@ -104,7 +104,7 @@ def show_splash_screen():
 def show_lives(lives):
     """Displays the number of lives left in the game."""
     try:
-        heart_image = pygame.image.load("Graphics/heart.png")
+        heart_image = pygame.image.load("graphics/heart.png")
         heart_image = pygame.transform.scale(heart_image, (40, 40))  # Scale the image
     except pygame.error as e:
         print(f"Error loading image: {e}")
@@ -141,8 +141,8 @@ def save_high_score():
 def show_score():
     """Displays the apple image, trophy image, and score with walls around it."""
     # Load and display the apple and trophy images
-    apple_image = pygame.image.load('Graphics/apple.png')  # Load the apple image
-    trophy_image = pygame.image.load('Graphics/trophy.png')  # Load the trophy image
+    apple_image = pygame.image.load('graphics/apple.png')  # Load the apple image
+    trophy_image = pygame.image.load('graphics/trophy.png')  # Load the trophy image
 
     # Scale both images
     apple_image = pygame.transform.scale(apple_image, (40, 40))  # Scale the apple image
@@ -166,7 +166,7 @@ def add_border_outline():
     border_thickness = 65
 
     # Load the image you want to use for the top border
-    border_image = pygame.image.load("Graphics/grass.jpg")
+    border_image = pygame.image.load("graphics/grass.jpg")
 
     # Scale the image to the required size (e.g., the full width of the screen and the border thickness)
     border_image = pygame.transform.scale(border_image, (SCREEN_WIDTH, border_thickness))
@@ -340,6 +340,7 @@ def game_loop():
     show_splash_screen()
     difficulty = select_difficulty()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    first_move = True  # Flag to indicate if the snake is making its first move
 
     while GAME_ON:
         # Clear screen by drawing the background
@@ -375,27 +376,29 @@ def game_loop():
                         snake.change_direction(RIGHT)
 
         # Check for wall collisions and self-collision
-        for wall in walls:
-            wall.draw(screen)  # Draw each wall
-            # Check if snake's head is inside the wall bounds
-            if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
-                    snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
-                collision_sound.play()  # Play collision sound
-                lives -= 1  # Decrease the number of lives
-                if lives > 0:
-                    # Reset position without shrinking the snake
-                    snake.snake = [(screen_size // 2, screen_size // 2) for _ in range(len(snake.snake))]
-                    snake.direction = RIGHT  # Reset direction to default
-                else:
-                    game_over_screen()
+        if first_move:
+            first_move = False
+        else:
+            # Check for wall collisions after the first move
+            for wall in walls:
+                wall.draw(screen)  # Draw each wall
+                # Check if snake's head is inside the wall bounds
+                if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
+                        snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
+                    collision_sound.play()  # Play collision sound
+                    lives -= 1  # Decrease the number of lives
+                    if lives > 0:
+                        snake.reset_position(screen_size)
+                    else:
+                        game_over_screen()
 
-            if snake.check_self_collision():
-                collision_sound.play()
-                lives -= 1
-                if lives > 0:
-                    snake.reset_position(screen_size)  # Use the new reset method
-                else:
-                    game_over_screen()
+                if snake.self_collision():
+                    collision_sound.play()
+                    lives -= 1
+                    if lives > 0:
+                        snake.reset_position(screen_size)  # Use the new reset method
+                    else:
+                        game_over_screen()
 
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
