@@ -55,15 +55,9 @@ class Snake:
 
     def draw(self, screen):
         """Draws the snake on the screen."""
-        for i, snake_pos in enumerate(self.snake[:-1]):
-            # If it's the first segment, draw the head
-            if i == 0:
-                screen.blit(self.head, snake_pos)
-            # Otherwise, draw the body
-            else:
-                screen.blit(self.skin, snake_pos)
-        # Draw the tail (the last segment)
-        screen.blit(self.tail, self.snake[0])
+        for snake_pos in self.snake[:-1]:
+            screen.blit(self.skin, snake_pos)
+            screen.blit(self.head, self.snake[-1])
 
     def crawl(self):
         x, y = self.snake[-1]  # Get current head position
@@ -85,13 +79,17 @@ class Snake:
         # Add new head position to the snake
         self.snake.append((x, y))
 
-        # Check for collision with the wall or itself
-        self.wall_collision()
-        # self.self_collision()
+        # Check for self-collision (collision with its body)
+        self.self_collision()
 
-        # If no collision, remove the tail
-        if not (self.snake[-1] in self.snake[:-1]):
+        # Check for wall collision
+        self.wall_collision()
+
+        # If no collision, remove the tail unless the snake has just eaten
+        if not self.new_block:
             self.snake.pop(0)
+        else:
+            self.new_block = False  # Reset after the snake grows
 
     def wall_collision(self):
         """Check if the snake collides with the wall."""
@@ -105,13 +103,12 @@ class Snake:
         """Check if the snake collides with itself."""
         head_x, head_y = self.snake[-1]
 
-        # Collision with snake's own body
-        if (head_x, head_y) in self.snake[:-1]:
+        # Collision with snake's own body (excluding the head)
+        if (head_x, head_y) in self.snake[:-1]:  # Head collides with body
             self.lose_life()
 
-
     def lose_life(self):
-        """Reduce lives when the snake collides."""
+        """Reduce lives when the snake collides with itself."""
         self.lives -= 1
         if self.lives <= 0:
             print("Game Over!")

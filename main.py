@@ -245,7 +245,6 @@ def restart_game():
     score = 0
     SPEED = 10
     GAME_ON = True
-    GAME_ON = True
     lives = 3
 
     game_loop()
@@ -284,6 +283,8 @@ def game_over_screen():
                     waiting_for_input = False
                     restart_game()  # Restart the game
                     return  # Exit the function after restarting
+                elif lives <= 0:
+                    game_over_screen()
                 elif event.key == K_q:  # Quit game
                     pygame.quit()
                     exit()
@@ -382,7 +383,6 @@ def game_loop():
             # Check for wall collisions after the first move
             for wall in walls:
                 wall.draw(screen)  # Draw each wall
-                # Check if snake's head is inside the wall bounds
                 if snake.snake[-1][0] in range(wall.x, wall.x + wall.width) and \
                         snake.snake[-1][1] in range(wall.y, wall.y + wall.height):
                     collision_sound.play()  # Play collision sound
@@ -392,13 +392,14 @@ def game_loop():
                     else:
                         game_over_screen()
 
-                if snake.self_collision():
-                    collision_sound.play()
-                    lives -= 1
-                    if lives > 0:
-                        snake.reset_position(screen_size)  # Use the new reset method
-                    else:
-                        game_over_screen()
+            # Check for self-collision
+            if snake.self_collision():
+                collision_sound.play()
+                lives -= 1
+                if lives > 0:
+                    snake.reset_position(screen_size)
+                else:
+                    game_over_screen()
 
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
@@ -447,9 +448,7 @@ def game_loop():
             SPEED += 1.5
 
         # Draw snake, banana, grape and apple
-        for snake_pos in snake.snake[:-1]:
-            screen.blit(snake.skin, snake_pos)
-            screen.blit(snake.head, snake.snake[-1])
+        snake.draw(screen)
 
         # Draw the apple
         apple.draw(screen)
@@ -459,11 +458,6 @@ def game_loop():
 
         if grape_active:
             grape.draw(screen)  # Draw the grape
-
-        # Draw snake and apple
-        for snake_pos in snake.snake[:-1]:
-            screen.blit(snake.skin, snake_pos)
-            screen.blit(snake.head, snake.snake[-1])
 
         # Draw the apple
         apple.draw(screen)
