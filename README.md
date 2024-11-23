@@ -56,7 +56,8 @@ The goal of the game is to control the snake, collect apples, and achieve the hi
 8. **Game over screen**: Displays the player’s score and high score after the game ends, with options to restart or quit.
 9. **Restart game**: Press R to restart the game after it’s over.
 10. **Start-up splash screen**: A welcoming screen with the game title and instructions.
-
+11. **Power-ups**: Introduce power-ups like extra lives to enhance the gameplay experience.
+12. **Visual Enhancements**: Implement background images, snake skins, and apple skins to improve the overall game aesthetics.
 
 ## <a name="quick-start">Quick Start</a>
 
@@ -92,16 +93,13 @@ python main.py
 ## <a name="code-overview">Code Overview</a>
 
 - **snake.py**: Manages the snake's movement, growth, and collision detection. It defines the behavior when the snake eats apples, grows, or collides with obstacles.
-- **apple.py**: Controls the apple's appearance and random positioning on the screen. It ensures apples spawn at different locations for the player to collect.
+- **fruit.py**: Controls the apple's and powerups appearance and random positioning on the screen.
 - **walls.py**: Defines the positions and dimensions of walls within the game arena. It adds obstacles that the player must avoid.
 - **main.py**: Contains the main game loop that integrates the snake, apples, and walls. It handles user inputs, game state management, and renders the game screen.
-- **powerups.py**: Manages the appearance and random positioning of powerups on the screen. It controls the behavior of powerups when collected by the player.
 
 ## <a name="future-improvements">Future Improvements</a>
 
 - **Difficulty Levels**: Add different difficulty levels with faster speeds and more obstacles to provide players with varying challenges.
-- **Visual Enhancements**: Implement background images, different snake skins, and apple skins to improve the overall game aesthetics.
-- **Power-ups**: Introduce power-ups like extra lives, speed boosts, or other abilities to enhance the gameplay experience.
 
 ## <a name="acknowledgements">Acknowledgements</a>
 
