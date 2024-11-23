@@ -389,16 +389,14 @@ def game_loop():
                 else:
                     game_over_screen()
 
-        # Check for self-collision
-        if snake.check_self_collision():
-            collision_sound.play()  # Play collision sound
-            lives -= 1  # Decrease the number of lives
-            if lives > 0:
-                # Reset position without shrinking the snake
-                snake.snake = [(screen_size // 2, screen_size // 2) for _ in range(len(snake.snake))]
-                snake.direction = RIGHT  # Reset direction to default
-            else:
-                game_over_screen()
+            if snake.check_self_collision():
+                collision_sound.play()
+                lives -= 1
+                if lives > 0:
+                    snake.reset_position(screen_size)  # Use the new reset method
+                else:
+                    game_over_screen()
+
         # Check if snake eats apple
         if snake.snake_eat_apple(apple.position):
             apple.set_random_position(400, walls)  # Set new random position for the apple

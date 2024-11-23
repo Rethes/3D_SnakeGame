@@ -135,3 +135,9 @@ class Snake:
             if head == segment:
                 return True  # Collision with itself
         return False
+
+    def reset_position(self, screen_size):
+        """Resets the snake's position to the center of the screen."""
+        initial_length = len(self.snake)  # Preserve the current length
+        self.snake = [(screen_size // 2, screen_size // 2) for _ in range(initial_length)]
+        self.direction = RIGHT  # Reset direction to default
