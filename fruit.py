@@ -14,8 +14,8 @@ class Fruit:
         valid_position = False
         while not valid_position:
             # Generate random position within the screen area minus the border (100px)
-            x = random.randint(100, screen_size - 100)
-            y = random.randint(100, screen_size - 100)
+            x = random.randint(100, screen_size)
+            y = random.randint(100, screen_size)
 
             # Check if the position is within any wall or the outline area
             valid_position = True
